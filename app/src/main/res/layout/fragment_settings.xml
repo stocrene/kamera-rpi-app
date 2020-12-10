@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/settings_margin_top"
+            android:layout_marginLeft="@dimen/settings_textview_margin_left"
+            android:text="IP-Adresse"
+            android:textSize="@dimen/settings_textview_textSize" />
+
+        <EditText
+            android:id="@+id/editText_ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_edittext_margin_left"
+            android:layout_marginRight="@dimen/settings_edittext_margin_right"
+            android:backgroundTint="@color/colorPrimary"
+            android:ems="10"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/textView_port"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/settings_textview_margin_top"
+            android:layout_marginLeft="@dimen/settings_textview_margin_left"
+            android:text="Port"
+            android:textSize="@dimen/settings_textview_textSize" />
+
+        <EditText
+            android:id="@+id/editText_port"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_edittext_margin_left"
+            android:layout_marginRight="@dimen/settings_edittext_margin_right"
+            android:backgroundTint="@color/colorPrimary"
+            android:ems="10"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textView_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/settings_textview_margin_top"
+            android:layout_marginLeft="@dimen/settings_textview_margin_left"
+            android:text="Benutzername"
+            android:textSize="@dimen/settings_textview_textSize" />
+
+        <EditText
+            android:id="@+id/editText_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_edittext_margin_left"
+            android:layout_marginRight="@dimen/settings_edittext_margin_right"
+            android:backgroundTint="@color/colorPrimary"
+            android:ems="10"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/textView_passwort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/settings_textview_margin_top"
+            android:layout_marginLeft="@dimen/settings_textview_margin_left"
+            android:text="Passwort"
+            android:textSize="@dimen/settings_textview_textSize" />
+
+        <EditText
+            android:id="@+id/editText_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_edittext_margin_left"
+            android:layout_marginRight="@dimen/settings_edittext_margin_right"
+            android:backgroundTint="@color/colorPrimary"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="260dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/settings_button_margin_top"
+            android:background="@drawable/button_confirm"
+            android:text="Bestätigen"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
