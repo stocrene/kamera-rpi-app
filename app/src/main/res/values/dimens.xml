@@ -8,6 +8,10 @@
 
     <dimen name="fab_margin">16dp</dimen>
 
+    <!-- fragment_buttons -->
+    <dimen name="arrow_button">60dp</dimen>
+
+    <!-- fragment_settings -->
     <dimen name="settings_margin_top">40dp</dimen>
     <dimen name="settings_textview_margin_top">30dp</dimen>
     <dimen name="settings_textview_margin_left">15dp</dimen>
@@ -15,4 +19,12 @@
     <dimen name="settings_edittext_margin_left">12dp</dimen>
     <dimen name="settings_edittext_margin_right">12dp</dimen>
     <dimen name="settings_button_margin_top">80dp</dimen>
+
+    <dimen name="icon_no_connection">55dp</dimen>
+
+    <!-- fragment_monitor - TabLayout -->
+    <dimen name="tabLayout_tiny_padding">0dp</dimen>
+    <dimen name="tabLayout_icon">28dp</dimen>
+    <dimen name="tabLayout_label_font_size">10sp</dimen>
+
 </resources>

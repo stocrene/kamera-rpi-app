@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.monitor.JoystickFragment">
+
+    <io.github.controlwear.virtual.joystick.android.JoystickView
+        android:id="@+id/joystick"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        app:JV_backgroundColor="@color/colorBackground"
+        app:JV_borderColor="@color/tablayout_color_inactive"
+        app:JV_borderWidth="3dp"
+        app:JV_buttonColor="@color/tablayout_color_inactive"
+        app:JV_buttonSizeRatio="25%"
+        app:JV_fixedCenter="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.767" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

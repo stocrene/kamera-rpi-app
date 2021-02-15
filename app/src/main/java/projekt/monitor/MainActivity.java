@@ -3,11 +3,13 @@ package projekt.monitor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,7 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity
 {
-
     private AppBarConfiguration mAppBarConfiguration;
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        //setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

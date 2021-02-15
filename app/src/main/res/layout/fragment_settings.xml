@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".ui.settings.SettingsFragment">
 
     <LinearLayout
@@ -89,15 +90,16 @@
 
         <Button
             android:id="@+id/button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="260dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/settings_button_margin_top"
             android:background="@drawable/button_confirm"
+            android:fontFamily="sans-serif-medium"
             android:text="Bestätigen"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

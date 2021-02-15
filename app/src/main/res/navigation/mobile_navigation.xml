@@ -18,9 +18,7 @@
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_nav_settings_to_nav_monitor2"
-            app:destination="@id/nav_monitor"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:popEnterAnim="@android:anim/bounce_interpolator" />
+            app:destination="@id/nav_monitor" />
     </fragment>
 
     <fragment

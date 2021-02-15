@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import androidx.navigation.Navigation;
+import androidx.transition.TransitionInflater;
 import projekt.monitor.MainActivity;
 import projekt.monitor.R;
 
@@ -42,6 +45,15 @@ public class SettingsFragment extends Fragment
     private SettingsViewModel settingsViewModel;
 
     private final String LOG_TAG = SettingsFragment.class.getSimpleName();
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -160,3 +172,4 @@ public class SettingsFragment extends Fragment
         return root;
     }
 }
+

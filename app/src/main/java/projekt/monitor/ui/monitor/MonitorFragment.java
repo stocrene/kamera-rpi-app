@@ -1,31 +1,45 @@
 package projekt.monitor.ui.monitor;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.os.AsyncTask;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.InputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Properties;
 
 import com.github.niqdev.mjpeg.DisplayMode;
 import com.github.niqdev.mjpeg.Mjpeg;
 import com.github.niqdev.mjpeg.MjpegView;
+import com.google.android.material.tabs.TabLayout;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.transition.TransitionInflater;
+import projekt.monitor.MainViewModel;
 import projekt.monitor.R;
-import rx.Subscription;
 
 public class MonitorFragment extends Fragment
 {
@@ -33,44 +47,167 @@ public class MonitorFragment extends Fragment
     private static String port = "";
     private static String username = "";
     private static String passwort = "";
+    private int motionPort = 8081;
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
     private MjpegView mjpegView;
+    private View rootView;
 
+    private Socket socket;
+    private int tcpPort = 10000;
+    private boolean socketRunning = false;
+    private int posX = 0;
+    private int posY = 0;
+
+    private MainViewModel mainViewModel;
     private MonitorViewModel monitorViewModel;
 
-    private ImageButton imageButtonL;
-    private ImageButton imageButtonR;
+    private ProgressBar loading_spinner;
+    private ImageButton imageButtonNoConnection;
+    private ImageView imageView_smartphone;
+    private ImageView imageView_cross;
+    private ImageView imageView_camera;
+    private ImageView imageView_line_left;
+    private ImageView imageView_line_right;
+    private ImageView imageViewArrowR;
+    private ImageView imageViewArrowL;
+    private ImageView imageViewArrowU;
+    private ImageView imageViewArrowD;
+    private ImageView imageView_info;
+    private ImageButton imageButtonAddLocation;
+
+    private TextView textView_tild;
+    private TextView textView_pan;
+    private TextView textView_camera_not_connected;
+
+    private Class[] fragments = {
+            ButtonsFragment.class,
+            JoystickFragment.class,
+            InputFragment.class,
+            PositionsFragment.class
+    };
+
+    private int[] navIcons = {
+            R.drawable.ic_tab_1_inactive,
+            R.drawable.ic_tab_2_inactive,
+            R.drawable.ic_tab_3_inactive,
+            R.drawable.ic_tab_4_inactive
+    };
+    private int[] navLabels = {
+            R.string.nav_buttons,
+            R.string.nav_joystick,
+            R.string.nav_input,
+            R.string.nav_positions
+    };
+    private int[] navIconsActive = {
+            R.drawable.ic_tab_1_active,
+            R.drawable.ic_tab_2_active,
+            R.drawable.ic_tab_3_active,
+            R.drawable.ic_tab_4_active
+    };
+
+    private Thread thread;
 
     private final String LOG_TAG = MonitorFragment.class.getSimpleName();
+    private final Integer TEXT_SIZE = 17;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        //new SocketThread().start();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        monitorViewModel = ViewModelProviders.of(this).get(MonitorViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_monitor, container, false);
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        monitorViewModel = new ViewModelProvider(this).get(MonitorViewModel.class);
 
-        pref = PreferenceManager.getDefaultSharedPreferences(root.getContext());
+        rootView = inflater.inflate(R.layout.fragment_monitor, container, false);
+
+        pref = PreferenceManager.getDefaultSharedPreferences(rootView.getContext());
         editor = pref.edit();
-
         ip       = pref.getString("ip", "");
         port     = pref.getString("port", "");
         username = pref.getString("username", "");
         passwort = pref.getString("passwort", "");
 
+        monitorViewModel.ip = ip;
 
-        //String vidAddress = "http://192.168.178.42/testvideo.mp4";
         String vidAddress = "http://192.168.178.34:8081";
-        //String vidAddress = "https://archive.org/download/ace_200911_04/00130d67f8ea0c43de91d30cdc13386c.mts-mp430-272.mp4";
-        //String vidAddress = "https://msfs-cdn.azureedge.net/wp-content/uploads/2020/07/Icon-5-Back-Country-Mtn-Lake.mp4?_=1";
 
-        mjpegView = (MjpegView)root.findViewById(R.id.mjpegView);
-/*
-        Uri vidUri = Uri.parse(vidAddress);
-        vidView.setVideoURI(vidUri);
-        vidView.start();
-*/
+
+        if(savedInstanceState == null)
+        {
+            getChildFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_container_view, fragments[mainViewModel.tab_active], null)
+                    .commit();
+        }
+
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabLayout);
+        for(int i = 0; i < tabLayout.getTabCount(); i++)
+        {
+            LinearLayout tab = (LinearLayout) this.getLayoutInflater().from(getContext()).inflate(R.layout.nav_tab, null);
+            TextView tab_label = (TextView) tab.findViewById(R.id.nav_label);
+            ImageView tab_icon = (ImageView) tab.findViewById(R.id.nav_icon);
+
+            tab_label.setText(getResources().getString(navLabels[i]));
+            if(i == mainViewModel.tab_active)
+            {
+                tab_label.setTextColor(getResources().getColor(R.color.tablayout_color_active));
+                tab_icon.setImageResource(navIconsActive[i]);
+                tabLayout.getTabAt(i).select();
+            }
+            else
+            {
+                tab_icon.setImageResource(navIcons[i]);
+            }
+            tabLayout.getTabAt(i).setCustomView(tab);
+        }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab)
+                    {
+                        getChildFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .replace(R.id.fragment_container_view, fragments[tab.getPosition()], null)
+                                .commit();
+
+                        View tabView = tab.getCustomView();
+
+                        TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                        ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+
+                        tab_label.setTextColor(getResources().getColor(R.color.tablayout_color_active));
+                        tab_icon.setImageResource(navIconsActive[tab.getPosition()]);
+                        mainViewModel.tab_active = tab.getPosition();
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab)
+                    {
+                        View tabView = tab.getCustomView();
+                        TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                        ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+
+                        tab_label.setTextColor(getResources().getColor(R.color.tablayout_color_inactive));
+                        tab_icon.setImageResource(navIcons[tab.getPosition()]);
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {}
+                }
+        );
+
+
+
         //mjpegView.setCustomBackgroundColor(Color.WHITE);
         /*monitorViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>()
         {
@@ -80,8 +217,75 @@ public class MonitorFragment extends Fragment
                 textView.setText(s);
             }
         });*/
-        imageButtonL = (ImageButton)root.findViewById(R.id.imageButtonL);
-        imageButtonR = (ImageButton)root.findViewById(R.id.imageButtonR);
+        loading_spinner = (ProgressBar) rootView.findViewById(R.id.loading_spinner);
+        mjpegView = (MjpegView) rootView.findViewById(R.id.mjpegView);
+        imageButtonNoConnection = (ImageButton) rootView.findViewById(R.id.imageButtonNoConnection);
+        imageButtonAddLocation = (ImageButton) rootView.findViewById(R.id.imageButton_add_position);
+        imageView_smartphone = (ImageView) rootView.findViewById(R.id.imageView_smartphone);
+        imageView_cross = (ImageView) rootView.findViewById(R.id.imageView_cross);
+        imageView_camera = (ImageView) rootView.findViewById(R.id.imageView_camera);
+        imageView_line_left = (ImageView) rootView.findViewById(R.id.imageView_line_left);
+        imageView_line_right = (ImageView) rootView.findViewById(R.id.imageView_line_right);
+        imageViewArrowR = (ImageView) rootView.findViewById(R.id.imageViewArrowR);
+        imageViewArrowL = (ImageView) rootView.findViewById(R.id.imageViewArrowL);
+        imageViewArrowU = (ImageView) rootView.findViewById(R.id.imageViewArrowU);
+        imageViewArrowD = (ImageView) rootView.findViewById(R.id.imageViewArrowD);
+        imageView_info = (ImageView) rootView.findViewById(R.id.imageView_info);
+        textView_tild = (TextView) rootView.findViewById(R.id.textView_tild);
+        textView_pan = (TextView) rootView.findViewById(R.id.textView_pan);
+        textView_camera_not_connected = (TextView) rootView.findViewById(R.id.textView_camera_not_connected);
+
+        //DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.red));
+        DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), Color.WHITE);
+        DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowL.getDrawable()).mutate(), Color.WHITE);
+        DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowU.getDrawable()).mutate(), Color.WHITE);
+        DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowD.getDrawable()).mutate(), Color.WHITE);
+
+        imageButtonNoConnection.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View w)
+            {
+                makeAlertDialog();
+            }
+        });
+
+        imageButtonAddLocation.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View w)
+            {
+                DialogFragment dialogLocationFragment = new DialogLocationFragment();
+                dialogLocationFragment.show(getActivity().getSupportFragmentManager(), "addLocation");
+            }
+        });
+/*
+        imageButtonR.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (mjpegView.getSurfaceView().isShown())
+                {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN)
+                    {
+                        imageViewArrowR.setVisibility(View.VISIBLE);
+                        Log.d(LOG_TAG, "Button Right Touch");
+                        if(true)
+                        {
+                            new SetPositionThread(posX, posY).start();
+                            posX = -1*(posX-180);
+                            posY = -1*(posY-180);
+                        }
+                    } else if (event.getAction() == MotionEvent.ACTION_UP)
+                    {
+                        imageViewArrowR.setVisibility(View.INVISIBLE);
+                        Log.d(LOG_TAG, "Button Right Release");
+                    }
+                }
+                return false;
+            }
+        });
 
         imageButtonL.setOnClickListener(new View.OnClickListener()
         {
@@ -94,18 +298,70 @@ public class MonitorFragment extends Fragment
             }
         });
 
-        imageButtonR.setOnClickListener(new View.OnClickListener()
+        imageButtonL.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
-            public void onClick(View w)
+            public boolean onTouch(View v, MotionEvent event)
             {
-                Log.d(LOG_TAG, "Button Rechts");
-                Log.d(LOG_TAG, "rotatCamera(rechts)");
-                rotateCamera("rechts");
+                if (mjpegView.getSurfaceView().isShown())
+                {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN)
+                    {
+                        imageViewArrowL.setVisibility(View.VISIBLE);
+                        Log.d(LOG_TAG, "Button Left Touch");
+                    } else if (event.getAction() == MotionEvent.ACTION_UP)
+                    {
+                        imageViewArrowL.setVisibility(View.INVISIBLE);
+                        Log.d(LOG_TAG, "Button Left Release");
+                    }
+                }
+                return false;
             }
         });
 
-        return root;
+        imageButtonU.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (mjpegView.getSurfaceView().isShown())
+                {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN)
+                    {
+                        imageViewArrowU.setVisibility(View.VISIBLE);
+                        Log.d(LOG_TAG, "Button Up Touch");
+                    } else if (event.getAction() == MotionEvent.ACTION_UP)
+                    {
+                        imageViewArrowU.setVisibility(View.INVISIBLE);
+                        Log.d(LOG_TAG, "Button Up Release");
+                    }
+                }
+                return false;
+            }
+        });
+
+        imageButtonD.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (mjpegView.getSurfaceView().isShown())
+                {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN)
+                    {
+                        imageViewArrowD.setVisibility(View.VISIBLE);
+                        Log.d(LOG_TAG, "Button Down Touch");
+                    } else if (event.getAction() == MotionEvent.ACTION_UP)
+                    {
+                        imageViewArrowD.setVisibility(View.INVISIBLE);
+                        Log.d(LOG_TAG, "Button Down Release");
+                    }
+                }
+                return false;
+            }
+        });
+*/
+        return rootView;
     }
 
 
@@ -231,27 +487,95 @@ public class MonitorFragment extends Fragment
     }
 
 
-    @Override
-    public void onResume()
+    void makeAlertDialog()
     {
-        super.onResume();
-        int TIMEOUT = 3;
+        AlertDialog alert = new AlertDialog.Builder(getContext())
+                //.setTitle("Keine Verbindung")
+                .setMessage(R.string.dialog_no_connection)
+            .setPositiveButton(R.string.dialog_positive_button, null)
+                //.setCancelable(false)
+            //.setIcon(R.drawable.ic_dialog_alert)
+            .create();
+        alert.setOnShowListener(new DialogInterface.OnShowListener()
+        {
+            @Override
+            public void onShow(DialogInterface dialog)
+            {
+                Button buttonPositive = alert.getButton(Dialog.BUTTON_POSITIVE);
+                buttonPositive.setTextSize(TEXT_SIZE);
+                //btnPositive.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+        });
+        alert.show();
+    }
+
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        int TIMEOUT = 5;
         Mjpeg.newInstance()
-                .open("http://" + ip + ":8081/", TIMEOUT)
+                .open("http://" + ip + ":" + motionPort + "/", TIMEOUT)
                 .subscribe(inputStream -> {
                             mjpegView.setSource(inputStream);
                             mjpegView.setDisplayMode(DisplayMode.BEST_FIT);
                             mjpegView.showFps(false);
+                            mjpegView.getSurfaceView().setVisibility(View.VISIBLE);
+                            Log.d(LOG_TAG, "mjpegStream()");
+                            loading_spinner.setVisibility(View.GONE);
+                            textView_tild.setVisibility(View.VISIBLE);
+                            textView_pan.setVisibility(View.VISIBLE);
                         },
                         throwable -> {
                             Log.e(LOG_TAG, "mjpeg error", throwable);
+                            loading_spinner.setVisibility(View.GONE);
+                            imageButtonNoConnection.setVisibility(View.VISIBLE);
+                            imageView_smartphone.setVisibility(View.VISIBLE);
+                            imageView_cross.setVisibility(View.VISIBLE);
+                            imageView_camera.setVisibility(View.VISIBLE);
+                            imageView_line_left.setVisibility(View.VISIBLE);
+                            imageView_line_right.setVisibility(View.VISIBLE);
+                            textView_camera_not_connected.setVisibility(View.VISIBLE);
+                            imageView_info.setVisibility(View.VISIBLE);
+
+                            /*
+                            if(rootView.isShown())
+                            {
+                                makeAlertDialog();
+                            }
+                            */
                         });
     }
 
     @Override
-    public void onPause()
+    public void onStop()
     {
-        super.onPause();
+        super.onStop();
         mjpegView.stopPlayback();
     }
+
+
+    class SocketThread extends Thread
+    {
+        public void run()
+        {
+            try
+            {
+                socket = new Socket("192.168.178.34", tcpPort);
+                socketRunning = true;
+                Log.d(LOG_TAG, "socket");
+            }
+            catch (Exception e)
+            {
+                Log.e(LOG_TAG, "Socket error", e);
+            }
+        }
+    }
+
 }
+
+
+
+
+

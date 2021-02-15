@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".ui.monitor.ButtonsFragment">
+
+    <ImageButton
+        android:id="@+id/imageButtonU"
+        android:layout_width="@dimen/arrow_button"
+        android:layout_height="@dimen/arrow_button"
+        android:background="@drawable/button_round"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.281"
+        app:srcCompat="@drawable/ic_up" />
+
+    <ImageButton
+        android:id="@+id/imageButtonD"
+        android:layout_width="@dimen/arrow_button"
+        android:layout_height="@dimen/arrow_button"
+        android:background="@drawable/button_round"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.893"
+        app:srcCompat="@drawable/ic_down" />
+
+    <ImageButton
+        android:id="@+id/imageButtonL"
+        android:layout_width="@dimen/arrow_button"
+        android:layout_height="@dimen/arrow_button"
+        android:background="@drawable/button_round"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.174"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.563"
+        app:srcCompat="@drawable/ic_left" />
+
+    <ImageButton
+        android:id="@+id/imageButtonR"
+        android:layout_width="@dimen/arrow_button"
+        android:layout_height="@dimen/arrow_button"
+        android:background="@drawable/button_round"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.834"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.563"
+        app:srcCompat="@drawable/ic_right" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
