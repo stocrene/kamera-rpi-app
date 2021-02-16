@@ -8,5 +8,5 @@ android:shape="line"
     android:viewportWidth="24">
 <stroke
     android:width="4dp"
-    android:color="#000000" />
+    android:color="@color/icon_no_connection" />
 </shape>
