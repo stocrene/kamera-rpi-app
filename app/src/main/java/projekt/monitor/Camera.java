@@ -32,7 +32,7 @@ public class Camera
     public Camera()
     {
         pos = 0;
-        ip = "192.168.1.0";
+        ip = "192.168.1.0";    // IP-Adresse aus sharedPreferences auslesen (siehe MonitorFragment)
     }
 
     //Überträgt die gewünschte Soll-Position

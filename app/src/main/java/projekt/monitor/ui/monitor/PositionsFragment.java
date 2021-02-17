@@ -58,7 +58,7 @@ public class PositionsFragment extends Fragment
         {
             //sort list alphabetically
             Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
-            
+
             listAdapter = new ArrayAdapter<>(
                     getContext(),
                     R.layout.list_item_position,
