@@ -12,7 +12,7 @@
 
     <!-- fragment_monitor -->
     <color name="grey">#AB000000</color>
-    <color name="icon_no_connection">#36000000</color>
+    <color name="icon_no_connection">#45000000</color>
     <!-- TabLayout -->
     <color name="line">#A6A6A6</color>
     <color name="tablayout_color_active">@color/colorPrimary</color>

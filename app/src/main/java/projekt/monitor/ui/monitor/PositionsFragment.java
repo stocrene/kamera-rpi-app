@@ -14,6 +14,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import projekt.monitor.R;
@@ -54,6 +56,9 @@ public class PositionsFragment extends Fragment
         List<String> positionsList = positions.getPositions(getContext());
         if(positionsList != null)
         {
+            //sort list alphabetically
+            Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
+            
             listAdapter = new ArrayAdapter<>(
                     getContext(),
                     R.layout.list_item_position,
