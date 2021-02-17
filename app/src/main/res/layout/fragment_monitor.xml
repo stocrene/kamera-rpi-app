@@ -246,6 +246,7 @@
         android:background="@color/colorBackground"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_add_position"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/fragment_container_view"
         app:layout_constraintDimensionRatio="w,"
         app:layout_constraintEnd_toEndOf="@+id/fragment_status"

@@ -3,45 +3,59 @@ package projekt.monitor;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Positions
 {
-    private static String KEY = "arrayPositions";
-    private static String ARRAY_NAME = "positions";
+    private static String KEY = "listPositions";
+    private static String LIST_NAME = "positions";
 
-    public boolean addPosition(String position, Context mContext)
+    public void addPosition(String position, Context mContext)
     {
-        String array[] = getArray(mContext);
-
+        List<String> positionsList = new ArrayList<String>();
+        if(getPositions(mContext) != null)
+        {
+            positionsList = getPositions(mContext);
+        }
+        positionsList.add(position);
+        saveList(positionsList, mContext);
     }
 
-    public boolean removePosition(String position, Context mContext)
+    public void removePosition(String position, Context mContext)
     {
-        String array[] = getArray(mContext);
-
+        List<String> positionsList = new ArrayList<String>();
+        if(getPositions(mContext) != null)
+        {
+            positionsList = getPositions(mContext);
+        }
+        positionsList.remove(positionsList.indexOf(position));
+        saveList(positionsList, mContext);
     }
 
-    public String[] getPositions(Context mContext)
+    public List<String> getPositions(Context mContext)
     {
         SharedPreferences prefs = mContext.getSharedPreferences(KEY, 0);
-        int size = prefs.getInt(ARRAY_NAME + "_size", 0);
+        int size = prefs.getInt(LIST_NAME + "_size", 0);
         if(size == 0) {return null;}
-        String array[] = new String[size];
+        List<String> positionsList = new ArrayList<String>();
         for(int i = 0; i < size; i++)
         {
-            array[i] = prefs.getString(ARRAY_NAME + "_" + i, null);
+            positionsList.add(prefs.getString(LIST_NAME + "_" + i, null));
         }
-        return array;
+        return positionsList;
     }
 
-    private boolean saveArray(String[] array, Context mContext)
+    private void saveList(List<String> positionsList, Context mContext)
     {
         SharedPreferences prefs = mContext.getSharedPreferences(KEY, 0);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(ARRAY_NAME +"_size", array.length);
-        for(int i = 0; i < array.length; i++)
+        editor.putInt(LIST_NAME +"_size", positionsList.size());
+        for(int i = 0; i < positionsList.size(); i++)
         {
-            editor.putString(ARRAY_NAME + "_" + i, array[i]);
+            editor.putString(LIST_NAME + "_" + i, positionsList.get(i));
         }
-        return editor.commit();
+        editor.commit();
     }
 }

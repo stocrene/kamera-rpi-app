@@ -526,13 +526,14 @@ public class MonitorFragment extends Fragment
                             mjpegView.showFps(false);
                             mjpegView.getSurfaceView().setVisibility(View.VISIBLE);
                             Log.d(LOG_TAG, "mjpegStream()");
-                            loading_spinner.setVisibility(View.GONE);
+                            loading_spinner.setVisibility(View.INVISIBLE);
                             textView_tild.setVisibility(View.VISIBLE);
                             textView_pan.setVisibility(View.VISIBLE);
+                            imageButtonAddLocation.setVisibility(View.VISIBLE);
                         },
                         throwable -> {
                             Log.e(LOG_TAG, "mjpeg error", throwable);
-                            loading_spinner.setVisibility(View.GONE);
+                            loading_spinner.setVisibility(View.INVISIBLE);
                             imageButtonNoConnection.setVisibility(View.VISIBLE);
                             imageView_smartphone.setVisibility(View.VISIBLE);
                             imageView_cross.setVisibility(View.VISIBLE);

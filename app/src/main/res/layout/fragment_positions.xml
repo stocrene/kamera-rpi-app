@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.monitor.PositionsFragment">
 
+    <TextView
+        android:id="@+id/textView_no_positions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_positions"
+        android:textColor="#66000000"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/listView_positions"
+        app:layout_constraintStart_toStartOf="@+id/listView_positions"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ListView
         android:id="@+id/listView_positions"
         android:layout_width="0dp"
@@ -13,5 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>

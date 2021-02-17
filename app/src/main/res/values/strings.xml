@@ -26,10 +26,13 @@
     <string name="tild">Neigung</string>
     <string name="camera_not_connected">Kamera nicht verbunden</string>
 
+    <string name="no_positions">Keine Positionen gespeichert</string>
+
     <string name="dialog_textField_hint">Name der Position</string>
     <string name="dialog_helperText">Vergeben Sie einen Namen für die Position</string>
 
     <string name="dialog_add_location">Aktuelle Position speichern</string>
+    <string name="error_no_name">Geben Sie einen Namen für die Position ein</string>
     <string name="cancel">Abbrechen</string>
     <string name="save">Speichern</string>
 </resources>

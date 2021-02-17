@@ -34,9 +34,16 @@ public class DialogLocationFragment extends DialogFragment
                     {
                         TextInputLayout textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_name);
                         String posName = textInputLayout.getEditText().getText().toString();
-
-                        Positions positions = new Positions();
-                        positions.addPosition(posName, getContext());
+                        if(posName == "")
+                        {
+                            textInputLayout.setErrorEnabled(true);
+                            textInputLayout.setError(getResources().getString(R.string.error_no_name));
+                        }
+                        else
+                        {
+                            Positions positions = new Positions();
+                            positions.addPosition(posName, getContext());
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
