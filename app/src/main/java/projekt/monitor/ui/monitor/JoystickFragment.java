@@ -42,7 +42,7 @@ public class JoystickFragment extends Fragment
             {
                 Log.d(LOG_TAG, "Joystick angle: " + String.valueOf(angle));
 
-                if(strength > 10)
+                if(strength > 20)
                 {
                     if(angle < 20 || angle > 340)
                     {
@@ -56,7 +56,7 @@ public class JoystickFragment extends Fragment
 
 
             }
-        });
+        }, 100);
 
         return rootView;
     }

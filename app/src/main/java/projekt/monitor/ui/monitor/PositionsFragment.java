@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import projekt.monitor.R;
+import projekt.monitor.Positions;
 
 
 public class PositionsFragment extends Fragment
@@ -25,6 +26,7 @@ public class PositionsFragment extends Fragment
     private View parentView;
     private ImageButton button_add_position;
     private ArrayAdapter<String> listAdapter;
+    private Positions positions;
     private String[] listPositions = {"Position 1", "Position 2", "Position 3", "Position 4", "Position 5", "Position 6", "Position 7", "Position 8", "Position 9"};
 
 
