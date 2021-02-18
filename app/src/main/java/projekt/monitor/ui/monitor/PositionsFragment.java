@@ -1,16 +1,31 @@
 package projekt.monitor.ui.monitor;
 
+import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +46,7 @@ public class PositionsFragment extends Fragment
     private ArrayAdapter<String> listAdapter;
     private Positions positions = new Positions();
     //private String[] listPositions = {"Position 1", "Position 2", "Position 3", "Position 4", "Position 5", "Position 6", "Position 7", "Position 8", "Position 9"};
+    private final String LOG_TAG = PositionsFragment.class.getSimpleName();
 
 
     @Override
@@ -65,7 +81,7 @@ public class PositionsFragment extends Fragment
                     R.id.list_item_position_textview,
                     positionsList);
 
-            ListView listView = (ListView) rootView.findViewById(R.id.listView_positions);
+            SwipeMenuListView listView = (SwipeMenuListView) rootView.findViewById(R.id.listView_positions);
             listView.setAdapter(listAdapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
@@ -76,13 +92,83 @@ public class PositionsFragment extends Fragment
 
                 }
             });
-        }
+
+
+            SwipeMenuCreator creator = new SwipeMenuCreator()
+            {
+
+                @Override
+                public void create(SwipeMenu menu)
+                {
+                    // create "open" item
+                    SwipeMenuItem openItem = new SwipeMenuItem(getContext());
+                    // set item background
+                    openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+                            0xCE)));
+                    // set item width
+                    openItem.setWidth(dp2px(90));
+                    // set item title
+                    openItem.setTitle("Open");
+                    // set item title fontsize
+                    openItem.setTitleSize(18);
+                    // set item title font color
+                    openItem.setTitleColor(Color.WHITE);
+                    // add to menu
+                    menu.addMenuItem(openItem);
+
+                    // create "delete" item
+                    SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
+                    // set item background
+                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                            0x3F, 0x25)));
+                    // set item width
+                    deleteItem.setWidth(dp2px(90));
+                    // set a icon
+                    //deleteItem.setIcon(R.drawable.ic_delete);
+                    // add to menu
+                    menu.addMenuItem(deleteItem);
+                }
+            };
+            //set creator
+            listView.setMenuCreator(creator);
+            listView.setCloseInterpolator(new BounceInterpolator());
+
+            listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener()
+            {
+                @Override
+                public boolean onMenuItemClick(int position, SwipeMenu menu, int index)
+                {
+                    String pos = positionsList.get(position);
+                    switch (index)
+                    {
+                        case 0:
+                            //edit
+                            //edit(item);
+                            Log.d(LOG_TAG, "edit");
+                            break;
+                        case 1:
+                            //delete
+   					        //delete(item);
+                            positions.removePosition(pos, getContext());
+                            positionsList.remove(position);
+                            listView.setAdapter(listAdapter);
+                            break;
+                    }
+                    return false;
+                }
+            });
+            }
         else
         {
             rootView.findViewById(R.id.textView_no_positions).setVisibility(View.VISIBLE);
         }
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private int dp2px(int dp)
+    {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
     @Override
