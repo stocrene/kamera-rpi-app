@@ -1,5 +1,7 @@
 package projekt.monitor.ui.monitor;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -101,30 +104,26 @@ public class PositionsFragment extends Fragment
                 public void create(SwipeMenu menu)
                 {
                     // create "open" item
-                    SwipeMenuItem openItem = new SwipeMenuItem(getContext());
+                    SwipeMenuItem editItem = new SwipeMenuItem(getContext());
                     // set item background
-                    openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+                    editItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
                             0xCE)));
                     // set item width
-                    openItem.setWidth(dp2px(90));
+                    editItem.setWidth(dp2px(90));
                     // set item title
-                    openItem.setTitle("Open");
-                    // set item title fontsize
-                    openItem.setTitleSize(18);
-                    // set item title font color
-                    openItem.setTitleColor(Color.WHITE);
+                    editItem.setIcon(R.drawable.ic_edit);
                     // add to menu
-                    menu.addMenuItem(openItem);
+                    menu.addMenuItem(editItem);
 
                     // create "delete" item
                     SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
                     // set item background
-                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                            0x3F, 0x25)));
+                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xff, 0x33,
+                            0x33)));
                     // set item width
                     deleteItem.setWidth(dp2px(90));
                     // set a icon
-                    //deleteItem.setIcon(R.drawable.ic_delete);
+                    deleteItem.setIcon(R.drawable.ic_delete);
                     // add to menu
                     menu.addMenuItem(deleteItem);
                 }
@@ -148,10 +147,23 @@ public class PositionsFragment extends Fragment
                             break;
                         case 1:
                             //delete
-   					        //delete(item);
-                            positions.removePosition(pos, getContext());
-                            positionsList.remove(position);
-                            listView.setAdapter(listAdapter);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setCancelable(false);
+                            builder.setTitle("Position löschen");
+                            String message = "Position " + "<b>" + positionsList.get(position) + "</b>" + " wirklich löschen?";
+                            builder.setMessage(Html.fromHtml(message));
+                            builder.setNegativeButton("Abbrechen", null);
+                            builder.setPositiveButton("Löschen", new AlertDialog.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    positions.removePosition(pos, getContext());
+                                    positionsList.remove(position);
+                                    listView.setAdapter(listAdapter);
+                                    listView.setSelection(position-1);
+                                    Toast.makeText(getContext(), "Position gelöscht", Toast.LENGTH_SHORT).show();
+                                }});
+                            builder.show();
                             break;
                     }
                     return false;
