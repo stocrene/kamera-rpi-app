@@ -39,7 +39,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.transition.TransitionInflater;
 import projekt.monitor.MainViewModel;
-import projekt.monitor.Camera;
+
 import projekt.monitor.R;
 
 public class MonitorFragment extends Fragment
@@ -50,7 +50,7 @@ public class MonitorFragment extends Fragment
     private static String passwort = "";
     private int motionPort = 8081;
 
-    private Camera camera;
+
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
