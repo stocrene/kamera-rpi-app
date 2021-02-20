@@ -23,6 +23,7 @@ import java.net.Socket;
 
 import androidx.lifecycle.ViewModelProvider;
 import projekt.monitor.R;
+import projekt.monitor.Camera;
 
 
 
@@ -49,6 +50,11 @@ public class ButtonsFragment extends Fragment
 
     private View rootView;
     private View parentView;
+    
+    //Statische IP - Muss noch geändert werden, derzeit aber zu Testzwecke vorhanden
+    //MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
+    //Camera camera = new Camera(monitorViewModel.ip, tcpPort);
+    Camera camera = new Camera("192.168.1.14", tcpPort);
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -89,6 +95,7 @@ public class ButtonsFragment extends Fragment
                         if(true)
                         {
                             Log.d(LOG_TAG, "Set Position");
+                            //camera.sendDirection(1,0);
                             new SetPositionThread(posX, posY).start();
                             posX = -1*(posX-180);
                             posY = -1*(posY-180);
@@ -114,6 +121,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowL.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Left Touch");
+                        //camera.sendDirection(-1,0);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowL.setVisibility(View.INVISIBLE);
@@ -135,6 +143,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowU.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Up Touch");
+                        //camera.sendDirection(0,1);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowU.setVisibility(View.INVISIBLE);
@@ -156,6 +165,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowD.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Down Touch");
+                        //camera.sendDirection(0,-1);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowD.setVisibility(View.INVISIBLE);
