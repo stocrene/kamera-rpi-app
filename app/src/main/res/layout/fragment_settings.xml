@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/settings_margin_top"
             android:layout_marginLeft="@dimen/settings_textview_margin_left"
-            android:text="IP-Adresse"
+            android:text="@string/ip_adress"
             android:textSize="@dimen/settings_textview_textSize" />
 
         <EditText
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/settings_textview_margin_top"
             android:layout_marginLeft="@dimen/settings_textview_margin_left"
-            android:text="Port"
+            android:text="@string/port"
             android:textSize="@dimen/settings_textview_textSize" />
 
         <EditText
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/settings_textview_margin_top"
             android:layout_marginLeft="@dimen/settings_textview_margin_left"
-            android:text="Benutzername"
+            android:text="@string/username"
             android:textSize="@dimen/settings_textview_textSize" />
 
         <EditText
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/settings_textview_margin_top"
             android:layout_marginLeft="@dimen/settings_textview_margin_left"
-            android:text="Passwort"
+            android:text="@string/passwort"
             android:textSize="@dimen/settings_textview_textSize" />
 
         <EditText
@@ -95,9 +95,9 @@
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/settings_button_margin_top"
-            android:background="@drawable/button_confirm"
+            android:background="@drawable/button_save"
             android:fontFamily="sans-serif-medium"
-            android:text="Bestätigen"
+            android:text="@string/button_save"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
 

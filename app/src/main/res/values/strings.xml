@@ -6,31 +6,46 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_launch">LaunchActivity</string>
 
-    <string name="dialog_no_connection">Die Kamera wurde nicht gefunden</string>
-    <string name="dialog_positive_button">OKAY</string>
-
-    <string name="menu_monitor">Monitor</string>
-    <string name="menu_settings">Einstellungen</string>
-    <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- activity_main_drawer -->
+    <string name="menu_monitor">Monitor</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <!-- fragment_monitor -->
+    <string name="pan">Schwenk</string>
+    <string name="tild">Neigung</string>
+    <string name="camera_not_connected">Kamera nicht verbunden</string>
+    <!-- fragment_monitor - dialog -->
+    <string name="dialog_no_connection">Die Kamera wurde nicht gefunden</string>
+    <string name="dialog_positive_button">OKAY</string>
+    <!-- fragment_monitor - TabLayout -->
     <string name="nav_buttons">Tasten</string>
     <string name="nav_joystick">Joystick</string>
     <string name="nav_input">Eingabe</string>
     <string name="nav_positions">Positionen</string>
-    <string name="title_activity_launch">LaunchActivity</string>
 
-    <string name="pan">Schwenk</string>
-    <string name="tild">Neigung</string>
-    <string name="camera_not_connected">Kamera nicht verbunden</string>
+    <!-- fragment_settings -->
+    <string name="ip_adress">IP-Adresse</string>
+    <string name="port">Port</string>
+    <string name="username">Benutzername</string>
+    <string name="passwort">Passwort</string>
+    <string name="button_save">Speichern</string>
 
+    <!-- fragment_positions -->
     <string name="no_positions">Keine Positionen gespeichert</string>
+    <!-- fragment_positions - delete dialog -->
+    <string name="delete_dialog_title">Position löschen</string>
+    <string name="delete">Löschen</string>
+    <string name="toast_item_deleted">Position gelöscht</string>
 
+    <!-- fragment_dialog_add_position -->
     <string name="dialog_textField_hint">Name der Position</string>
     <string name="dialog_helperText">Vergeben Sie einen Namen für die Position</string>
-
     <string name="dialog_add_location">Aktuelle Position speichern</string>
     <string name="error_no_name">Geben Sie einen Namen für die Position ein</string>
     <string name="cancel">Abbrechen</string>

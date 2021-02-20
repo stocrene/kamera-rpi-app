@@ -3,14 +3,9 @@ package projekt.monitor.ui.monitor;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.fragment.app.DialogFragment;
@@ -19,7 +14,7 @@ import projekt.monitor.Positions;
 
 
 
-public class DialogLocationFragment extends DialogFragment
+public class DialogPositionFragment extends DialogFragment
 {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -28,7 +23,7 @@ public class DialogLocationFragment extends DialogFragment
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.fragment_dialog_add_location, null))
+        builder.setView(inflater.inflate(R.layout.fragment_dialog_add_position, null))
                 .setCancelable(false)
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener()
                 {

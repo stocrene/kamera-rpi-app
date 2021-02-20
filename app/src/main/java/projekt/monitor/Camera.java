@@ -32,21 +32,27 @@ public class Camera
     {
         final JSONObject object = new JSONObject();
 
-        try {
+        try
+        {
             object.put("X", x);
             object.put("Y", y);
             //object.put("pos", "pos");
 
-            try {
+            try
+            {
                 byte[] data = object.toString().getBytes("utf-8");
                 new Send(data, ip).start();
-            } catch (UnsupportedEncodingException e) {
+            }
+            catch (UnsupportedEncodingException e)
+            {
                 //e.printStackTrace();
                 Log.e(LOG_TAG, "Failed to create data", e);
             }
 
 
-        } catch (JSONException e) {
+        }
+        catch (JSONException e)
+        {
             //e.printStackTrace();
             Log.e(LOG_TAG, "Failed to create JSONObject", e);
         }
@@ -63,17 +69,22 @@ public class Camera
             object.put("Y", y);
             //object.put("speed", "speed");
 
-            try {
+            try
+            {
                 byte[] data = object.toString().getBytes("utf-8");
                 Log.d(LOG_TAG, object.toString());
                 new Send(data, ip).start();
-            } catch (UnsupportedEncodingException e) {
+            }
+            catch (UnsupportedEncodingException e)
+            {
                 //e.printStackTrace();
                 Log.e(LOG_TAG, "Failed to create data", e);
             }
 
 
-        } catch(JSONException e){
+        }
+        catch(JSONException e)
+        {
             Log.e(LOG_TAG, "Failed to create JSONObject", e);
         }
     }
@@ -95,7 +106,8 @@ public class Camera
 
 }
 
-class Send extends Thread {
+class Send extends Thread
+{
     private String ip;
     private byte[] data;
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
@@ -103,30 +115,37 @@ class Send extends Thread {
     private int tcpPort = 10000;
     private boolean socketRunning = false;
 
-    public Send(byte[] data, String ip ) {
+    public Send(byte[] data, String ip )
+    {
         this.ip = ip;
         this.data = data;
     }
 
 
-    public void run() {
+    public void run()
+    {
         Log.d(LOG_TAG, "Dateien werden gesendet");
-        try {
+        try
+        {
             socket = new Socket("192.168.1.14", 10000);
             socketRunning = true;
 
-            try {
+            try
+            {
                 Log.d(LOG_TAG, "Try send data");
                 OutputStream output = socket.getOutputStream();
                 output.write(data);
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 Log.e(LOG_TAG, "Failed to get socket OutputStream", e);
             }
 
             socket.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.e(LOG_TAG, "Socket error", e);
         }
-
     }
 }

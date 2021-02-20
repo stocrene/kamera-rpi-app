@@ -103,11 +103,12 @@ public class PositionsFragment extends Fragment
                 @Override
                 public void create(SwipeMenu menu)
                 {
-                    // create "open" item
+                    // create "edit" item
                     SwipeMenuItem editItem = new SwipeMenuItem(getContext());
                     // set item background
-                    editItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                            0xCE)));
+                    //editItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
+                    //editItem.setBackground(new ColorDrawable(Color.rgb(0x3c, 0x3c, 0x3c)));
+                    editItem.setBackground(new ColorDrawable(Color.rgb(0xa4, 0xa9, 0xad)));
                     // set item width
                     editItem.setWidth(dp2px(90));
                     // set item title
@@ -118,8 +119,9 @@ public class PositionsFragment extends Fragment
                     // create "delete" item
                     SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
                     // set item background
-                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xff, 0x33,
-                            0x33)));
+                    //deleteItem.setBackground(new ColorDrawable(Color.rgb(0xff, 0x33, 0x33)));
+                    //deleteItem.setBackground(new ColorDrawable(Color.rgb(0xff, 0x5a, 0x5f)));
+                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xef, 0x5b, 0x5b)));
                     // set item width
                     deleteItem.setWidth(dp2px(90));
                     // set a icon
@@ -149,11 +151,11 @@ public class PositionsFragment extends Fragment
                             //delete
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setCancelable(false);
-                            builder.setTitle("Position löschen");
+                            builder.setTitle(R.string.delete_dialog_title);
                             String message = "Position " + "<b>" + positionsList.get(position) + "</b>" + " wirklich löschen?";
                             builder.setMessage(Html.fromHtml(message));
-                            builder.setNegativeButton("Abbrechen", null);
-                            builder.setPositiveButton("Löschen", new AlertDialog.OnClickListener()
+                            builder.setNegativeButton(R.string.cancel, null);
+                            builder.setPositiveButton(R.string.delete, new AlertDialog.OnClickListener()
                             {
                                 public void onClick(DialogInterface dialog, int which)
                                 {
@@ -161,7 +163,7 @@ public class PositionsFragment extends Fragment
                                     positionsList.remove(position);
                                     listView.setAdapter(listAdapter);
                                     listView.setSelection(position-1);
-                                    Toast.makeText(getContext(), "Position gelöscht", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
                                 }});
                             builder.show();
                             break;
