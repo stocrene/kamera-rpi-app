@@ -262,6 +262,8 @@ public class MonitorFragment extends Fragment
                 dialogPositionFragment.show(getActivity().getSupportFragmentManager(), "addPosition");
             }
         });
+
+
 /*
         imageButtonR.setOnTouchListener(new View.OnTouchListener()
         {
@@ -367,7 +369,10 @@ public class MonitorFragment extends Fragment
         return rootView;
     }
 
+    public void updatePosition(int x, int y)
+    {
 
+    }
 
     /*public void sshBefehl(final String ip, final int port, final String username, final String passwort)
     {
