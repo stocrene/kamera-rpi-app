@@ -65,8 +65,12 @@ public class PositionsFragment extends Fragment
             button_add_position.setVisibility(View.INVISIBLE);
             button_add_position_visible = true;
         }
+        setList(0);
+        return rootView;
+    }
 
-
+    private void setList(int position)
+    {
         List<String> positionsList = positions.getPositions(getContext());
         if(positionsList != null)
         {
@@ -81,6 +85,7 @@ public class PositionsFragment extends Fragment
 
             SwipeMenuListView listView = (SwipeMenuListView) rootView.findViewById(R.id.listView_positions);
             listView.setAdapter(listAdapter);
+            listView.setSelection(position-1);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
@@ -139,12 +144,15 @@ public class PositionsFragment extends Fragment
                     {
                         case 0:
                             //edit
-                            //edit(item);
-                            Log.d(LOG_TAG, "edit");
+                            DialogRenameFragment dialogRenameFragment = new DialogRenameFragment(pos);
+                            dialogRenameFragment.show(getActivity().getSupportFragmentManager(), "renamePosition");
+                            setList(position);
                             break;
                         case 1:
                             //delete
-//                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment();
+                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment();
+                            dialogDeleteFragment.show(getActivity().getSupportFragmentManager(), "deletePosition");
+                            setList(position);
 //                            AlertDialog dialog = dialogDeleteFragment.getDialog();
 //                            dialog.show();
 //                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
@@ -169,35 +177,28 @@ public class PositionsFragment extends Fragment
 //                                    }
 //                                }
 //                            });
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setCancelable(false);
-                            builder.setTitle(R.string.dialog_delete_position_title);
-                            String message = "Position " + "<b>" + positionsList.get(position) + "</b>" + " wirklich löschen?";
-                            builder.setMessage(Html.fromHtml(message));
-                            builder.setNegativeButton(R.string.cancel, null);
-                            builder.setPositiveButton(R.string.delete, new AlertDialog.OnClickListener()
-                            {
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    positions.removePosition(pos, getContext());
-                                    positionsList.remove(position);
-                                    listView.setAdapter(listAdapter);
-                                    listView.setSelection(position-1);
-                                    Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
-                                }});
-                            builder.show();
-                            break;
+//                            String message = "Position " + "<b>" + positionsList.get(position) + "</b>" + " wirklich löschen?";
+//
+//                                public void onClick(DialogInterface dialog, int which)
+//                                {
+//                                    positions.removePosition(pos, getContext());
+//                                    positionsList.remove(position);
+//                                    listView.setAdapter(listAdapter);
+//                                    listView.setSelection(position-1);
+//                                    Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
+//                                }});
+//                            builder.show();
+//                            break;
                     }
                     return false;
                 }
             });
-            }
+        }
         else
         {
             rootView.findViewById(R.id.textView_no_positions).setVisibility(View.VISIBLE);
         }
-        // Inflate the layout for this fragment
-        return rootView;
+
     }
 
     private int dp2px(int dp)

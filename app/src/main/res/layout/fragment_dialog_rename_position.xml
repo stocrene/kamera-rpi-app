@@ -12,7 +12,7 @@
         android:layout_height="@dimen/dialog_title_height"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:text="@string/dialog_add_position_title"
+        android:text="@string/dialog_rename_position_title"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedTextField_add_position"
+        android:id="@+id/outlinedTextField_rename_position"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

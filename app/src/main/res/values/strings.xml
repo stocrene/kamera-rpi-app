@@ -54,5 +54,7 @@
     <string name="toast_item_added">Position gespeichert</string>
 
     <!-- fragment_dialog_rename_position -->
+    <string name="dialog_rename_position_title">Position umbenennen</string>
     <string name="rename">Umbenennen</string>
+    <string name="toast_item_renamed">Position umbenannt</string>
 </resources>

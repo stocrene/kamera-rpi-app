@@ -19,7 +19,7 @@ public class JoystickFragment extends Fragment
     private float x;
     private float y;
     private View rootView;
-    private int interval = 200;
+    private int interval = 100;
 
     @Override
     public void onCreate(Bundle savedInstanceState)

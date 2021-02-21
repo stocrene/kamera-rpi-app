@@ -24,7 +24,6 @@ public class DialogPositionFragment extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         setCancelable(false);
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.fragment_dialog_add_position, null))
@@ -38,7 +37,7 @@ public class DialogPositionFragment extends DialogFragment
             @Override
             public void onClick(View v)
             {
-                TextInputLayout textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_name);
+                TextInputLayout textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_add_position);
                 String posName = textInputLayout.getEditText().getText().toString();
                 if(posName.equals(""))
                 {
