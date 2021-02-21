@@ -51,12 +51,13 @@ public class ButtonsFragment extends Fragment
 
     private View rootView;
     private View parentView;
+    //private MonitorViewModel monitorViewModel
 
 
     //Statische IP - Muss noch geändert werden, derzeit aber zu Testzwecke vorhanden
     //MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
     //Camera camera = new Camera(monitorViewModel.ip, tcpPort);
-    Camera camera = new Camera("192.168.1.15", tcpPort);
+    //Camera camera = new Camera("192.168.1.15", tcpPort);
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -68,6 +69,8 @@ public class ButtonsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
+        Camera camera = new Camera(monitorViewModel.ip, tcpPort);
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_buttons, container, false);
         parentView = getParentFragment().getView();
@@ -97,7 +100,8 @@ public class ButtonsFragment extends Fragment
                         if(true)
                         {
                             Log.d(LOG_TAG, "Set Position");
-                            camera.sendDirection(1,0);
+                            camera.sendDirection(100,0);
+
 
                             //new SetPositionThread(posX, posY).start();
                             //posX = -1*(posX-180);
@@ -113,6 +117,8 @@ public class ButtonsFragment extends Fragment
             }
         });
 
+
+
         imageButtonL.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -124,7 +130,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowL.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Left Touch");
-                        camera.sendDirection(-1,0);
+                        camera.sendDirection(-100,0);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowL.setVisibility(View.INVISIBLE);
@@ -146,7 +152,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowU.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Up Touch");
-                        camera.sendDirection(0,1);
+                        camera.sendDirection(0,100);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowU.setVisibility(View.INVISIBLE);
@@ -168,7 +174,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowD.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Down Touch");
-                        camera.sendDirection(0,-1);
+                        camera.sendDirection(0,-100);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowD.setVisibility(View.INVISIBLE);
