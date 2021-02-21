@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.*;
 import android.util.Log;
+import android.view.inspector.StaticInspectionCompanionProvider;
+
 import java.net.Socket;
 
 
@@ -36,12 +38,13 @@ public class Camera
         {
             object.put("X", x);
             object.put("Y", y);
-            //object.put("pos", "pos");
+            object.put("speed", "0");
+            object.put("pos", "1");
 
             try
             {
                 byte[] data = object.toString().getBytes("utf-8");
-                new Send(data, ip).start();
+                new Send(data, ip, tcpPort).start();
             }
             catch (UnsupportedEncodingException e)
             {
@@ -67,13 +70,14 @@ public class Camera
         try{
             object.put("X", x);
             object.put("Y", y);
-            //object.put("speed", "speed");
+            object.put("speed", "1");
+            object.put("pos", "0");
 
             try
             {
                 byte[] data = object.toString().getBytes("utf-8");
                 Log.d(LOG_TAG, object.toString());
-                new Send(data, ip).start();
+                new Send(data, ip, tcpPort).start();
             }
             catch (UnsupportedEncodingException e)
             {
@@ -112,13 +116,14 @@ class Send extends Thread
     private byte[] data;
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
     private Socket socket;
-    private int tcpPort = 10000;
+    private int tcpPort;
     private boolean socketRunning = false;
 
-    public Send(byte[] data, String ip )
+    public Send(byte[] data, String ip, int tcpPort)
     {
         this.ip = ip;
         this.data = data;
+        this.tcpPort = tcpPort;
     }
 
 
@@ -127,7 +132,7 @@ class Send extends Thread
         Log.d(LOG_TAG, "Dateien werden gesendet");
         try
         {
-            socket = new Socket("192.168.1.14", 10000);
+            socket = new Socket(ip, tcpPort);
             socketRunning = true;
 
             try
