@@ -52,4 +52,7 @@
     <string name="cancel">Abbrechen</string>
     <string name="save">Speichern</string>
     <string name="toast_item_added">Position gespeichert</string>
+
+    <!-- fragment_dialog_rename_position -->
+    <string name="rename">Umbenennen</string>
 </resources>

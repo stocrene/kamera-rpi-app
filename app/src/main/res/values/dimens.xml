@@ -30,4 +30,6 @@
     <dimen name="tabLayout_icon">28dp</dimen>
     <dimen name="tabLayout_label_font_size">10sp</dimen>
 
+    <dimen name="list_item_height">70dp</dimen>
+
 </resources>

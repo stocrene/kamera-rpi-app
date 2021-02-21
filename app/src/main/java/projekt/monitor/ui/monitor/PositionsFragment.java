@@ -144,31 +144,31 @@ public class PositionsFragment extends Fragment
                             break;
                         case 1:
                             //delete
-                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment();
-                            AlertDialog dialog = dialogDeleteFragment.getDialog();
-                            dialog.show();
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    TextInputLayout textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_name);
-                                    String posName = textInputLayout.getEditText().getText().toString();
-                                    if(posName.equals(""))
-                                    {
-                                        Log.d(LOG_TAG, "TextField empty");
-                                        textInputLayout.setErrorEnabled(true);
-                                        textInputLayout.setError(getResources().getString(R.string.error_no_name));
-                                    }
-                                    else
-                                    {
-                                        dialog.dismiss();
-                                        Positions positions = new Positions();
-                                        positions.addPosition(posName, getContext());
-                                        Toast.makeText(getContext(), getResources().getString(R.string.toast_item_added), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+//                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment();
+//                            AlertDialog dialog = dialogDeleteFragment.getDialog();
+//                            dialog.show();
+//                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+//                            {
+//                                @Override
+//                                public void onClick(View v)
+//                                {
+//                                    TextInputLayout textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_name);
+//                                    String posName = textInputLayout.getEditText().getText().toString();
+//                                    if(posName.equals(""))
+//                                    {
+//                                        Log.d(LOG_TAG, "TextField empty");
+//                                        textInputLayout.setErrorEnabled(true);
+//                                        textInputLayout.setError(getResources().getString(R.string.error_no_name));
+//                                    }
+//                                    else
+//                                    {
+//                                        dialog.dismiss();
+//                                        Positions positions = new Positions();
+//                                        positions.addPosition(posName, getContext());
+//                                        Toast.makeText(getContext(), getResources().getString(R.string.toast_item_added), Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }
+//                            });
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setCancelable(false);
                             builder.setTitle(R.string.dialog_delete_position_title);

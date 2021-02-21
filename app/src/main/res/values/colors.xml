@@ -19,4 +19,6 @@
     <color name="tablayout_color_inactive">#74000000</color>
     <!-- arrows -->
     <color name="red">#CD382D</color>
+
+    <color name="joystick">#676767</color>
 </resources>

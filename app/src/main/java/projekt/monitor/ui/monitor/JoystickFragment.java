@@ -19,12 +19,12 @@ public class JoystickFragment extends Fragment
     private float x;
     private float y;
     private View rootView;
+    private int interval = 200;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -42,33 +42,14 @@ public class JoystickFragment extends Fragment
             @Override
             public void onMove(int angle, int strength)
             {
-
-
                 if(strength > 20)
                 {
                     x = (float)Math.cos(Math.toRadians(angle))*strength;
                     y = (float) Math.sin(Math.toRadians(angle))*strength;
-
-
                     camera.sendDirection((int)x, (int)y);
-
-                    /*
-                    if(angle < 20 || angle > 340)
-                    {
-                        camera.sendDirection(1,0);
-                    }
-                    else if(angle > 20 && angle < 70)
-                    {
-                        camera.sendDirection(1,0);
-                    }
-
-                     */
                 }
-
-
             }
-        }, 200);
-
+        }, interval);
         return rootView;
     }
 }
