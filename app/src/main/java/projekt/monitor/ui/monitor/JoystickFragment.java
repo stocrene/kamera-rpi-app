@@ -51,6 +51,7 @@ public class JoystickFragment extends Fragment
 
 
                     camera.sendDirection((int)x, (int)y);
+
                     /*
                     if(angle < 20 || angle > 340)
                     {

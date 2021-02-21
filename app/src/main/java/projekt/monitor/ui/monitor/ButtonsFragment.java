@@ -100,7 +100,7 @@ public class ButtonsFragment extends Fragment
                         if(true)
                         {
                             Log.d(LOG_TAG, "Set Position");
-                            camera.sendDirection(100,0);
+                            camera.sendDirection(70,0);
 
 
                             //new SetPositionThread(posX, posY).start();
@@ -130,7 +130,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowL.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Left Touch");
-                        camera.sendDirection(-100,0);
+                        camera.sendDirection(-70,0);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowL.setVisibility(View.INVISIBLE);
@@ -152,7 +152,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowU.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Up Touch");
-                        camera.sendDirection(0,100);
+                        camera.sendDirection(0,70);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowU.setVisibility(View.INVISIBLE);
@@ -174,7 +174,7 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowD.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Down Touch");
-                        camera.sendDirection(0,-100);
+                        camera.sendDirection(0,-70);
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowD.setVisibility(View.INVISIBLE);
