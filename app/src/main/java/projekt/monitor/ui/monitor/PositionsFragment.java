@@ -1,12 +1,13 @@
 package projekt.monitor.ui.monitor;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -18,22 +19,16 @@ import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import projekt.monitor.R;
@@ -149,9 +144,34 @@ public class PositionsFragment extends Fragment
                             break;
                         case 1:
                             //delete
+                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment();
+                            AlertDialog dialog = dialogDeleteFragment.getDialog();
+                            dialog.show();
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    TextInputLayout textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_name);
+                                    String posName = textInputLayout.getEditText().getText().toString();
+                                    if(posName.equals(""))
+                                    {
+                                        Log.d(LOG_TAG, "TextField empty");
+                                        textInputLayout.setErrorEnabled(true);
+                                        textInputLayout.setError(getResources().getString(R.string.error_no_name));
+                                    }
+                                    else
+                                    {
+                                        dialog.dismiss();
+                                        Positions positions = new Positions();
+                                        positions.addPosition(posName, getContext());
+                                        Toast.makeText(getContext(), getResources().getString(R.string.toast_item_added), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setCancelable(false);
-                            builder.setTitle(R.string.delete_dialog_title);
+                            builder.setTitle(R.string.dialog_delete_position_title);
                             String message = "Position " + "<b>" + positionsList.get(position) + "</b>" + " wirklich löschen?";
                             builder.setMessage(Html.fromHtml(message));
                             builder.setNegativeButton(R.string.cancel, null);

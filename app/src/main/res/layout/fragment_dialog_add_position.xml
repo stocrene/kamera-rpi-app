@@ -9,10 +9,10 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dialog_title_height"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:text="@string/dialog_add_location"
+        android:text="@string/dialog_add_position_title"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
