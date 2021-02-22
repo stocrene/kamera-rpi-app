@@ -33,9 +33,8 @@ public class Camera
 
     //private Socket socket;
 
-    public Camera(String ip, int tcpPort)
+    public Camera(String ip)
     {
-        this.tcpPort = tcpPort;
         this.ip = ip;
         x_pos = 0;
         y_pos = 0;
@@ -116,7 +115,7 @@ public class Camera
     public void requestPosition()
     {
 
-        new Request("192.168.1.13", 10001).start();
+        new Request(ip).start();
 
 
 
@@ -182,14 +181,13 @@ class Request extends Thread
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
     private byte[] datain;
     private Socket socket;
-    private int tcpPort;
+    private int tcpPortRequest = 10001;
     private boolean socketRunning = false;
     private Socket clientSocket;
 
-    public Request(String ip, int tcpPort)
+    public Request(String ip)
     {
         this.ip = ip;
-        this.tcpPort = tcpPort;
     }
 
     public void run()
@@ -200,7 +198,7 @@ class Request extends Thread
         {
             //Verbindungsaufbau
             Log.d(LOG_TAG, "Verbindungsaufbau");
-            socket = new Socket(ip, tcpPort);
+            socket = new Socket(ip, tcpPortRequest);
             socketRunning = true;
             Log.d(LOG_TAG, "Verbindung aufgebaut");
 
