@@ -41,8 +41,11 @@ public class PositionsFragment extends Fragment
     private View parentView;
     private ImageButton button_add_position;
     private boolean button_add_position_visible = false;
-    private ArrayAdapter<String> listAdapter;
     private Positions positions = new Positions();
+
+    private List<String> positionsList;
+    private ArrayAdapter<String> listAdapter;
+    private SwipeMenuListView listView;
     //private String[] listPositions = {"Position 1", "Position 2", "Position 3", "Position 4", "Position 5", "Position 6", "Position 7", "Position 8", "Position 9"};
     private final String LOG_TAG = PositionsFragment.class.getSimpleName();
 
@@ -65,13 +68,10 @@ public class PositionsFragment extends Fragment
             button_add_position.setVisibility(View.INVISIBLE);
             button_add_position_visible = true;
         }
-        setList(0);
-        return rootView;
-    }
 
-    private void setList(int position)
-    {
-        List<String> positionsList = positions.getPositions(getContext());
+        PositionsFragment asdf = this;
+
+        positionsList = positions.getPositions(getContext());
         if(positionsList != null)
         {
             //sort list alphabetically
@@ -83,9 +83,8 @@ public class PositionsFragment extends Fragment
                     R.id.list_item_position_textview,
                     positionsList);
 
-            SwipeMenuListView listView = (SwipeMenuListView) rootView.findViewById(R.id.listView_positions);
+            listView = (SwipeMenuListView) rootView.findViewById(R.id.listView_positions);
             listView.setAdapter(listAdapter);
-            listView.setSelection(position-1);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
@@ -140,19 +139,27 @@ public class PositionsFragment extends Fragment
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index)
                 {
                     String pos = positionsList.get(position);
+                    Log.d(LOG_TAG, "index: " + String.valueOf(index));
                     switch (index)
                     {
                         case 0:
-                            //edit
+                            //rename
+                            Log.d(LOG_TAG, "rename");
                             DialogRenameFragment dialogRenameFragment = new DialogRenameFragment(pos);
                             dialogRenameFragment.show(getActivity().getSupportFragmentManager(), "renamePosition");
-                            setList(position);
+                            updateList(position);
                             break;
                         case 1:
                             //delete
-                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment();
+                            Log.d(LOG_TAG, "delete");
+                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment(pos, asdf);
                             dialogDeleteFragment.show(getActivity().getSupportFragmentManager(), "deletePosition");
-                            setList(position);
+                            positionsList.clear();
+                            positionsList = positions.getPositions(getContext());
+                            //positionsList.remove(position);
+                            listView.setAdapter(listAdapter);
+//                            listAdapter.notifyDataSetChanged();
+//                            listView.setAdapter(listAdapter);
 //                            AlertDialog dialog = dialogDeleteFragment.getDialog();
 //                            dialog.show();
 //                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
@@ -188,7 +195,7 @@ public class PositionsFragment extends Fragment
 //                                    Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
 //                                }});
 //                            builder.show();
-//                            break;
+                              break;
                     }
                     return false;
                 }
@@ -198,7 +205,24 @@ public class PositionsFragment extends Fragment
         {
             rootView.findViewById(R.id.textView_no_positions).setVisibility(View.VISIBLE);
         }
+        return rootView;
+    }
 
+    public void updateList(int position)
+    {
+        positionsList = positions.getPositions(getContext());
+        if(positionsList != null)
+        {
+            //sort list alphabetically
+            Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
+            listAdapter.notifyDataSetChanged();
+            listView.invalidateViews();
+            listView.setAdapter(listAdapter);
+        }
+        else
+        {
+            rootView.findViewById(R.id.textView_no_positions).setVisibility(View.VISIBLE);
+        }
     }
 
     private int dp2px(int dp)

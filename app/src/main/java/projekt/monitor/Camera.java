@@ -16,7 +16,8 @@ import projekt.monitor.ui.monitor.MonitorFragment;
 public class Camera
 {
     private Socket socket;
-    private int tcpPort = 10000;
+    private final int tcpPort = 10000;
+    private final int tcpPortRequest = 10001;
     private boolean socketRunning = false;
     private String ip;
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
@@ -26,9 +27,8 @@ public class Camera
 
 
 
-    public Camera(String ip, int tcpPort)
+    public Camera(String ip)
     {
-        this.tcpPort = tcpPort;
         this.ip = ip;
         x_pos = 0;
         y_pos = 0;
@@ -103,14 +103,13 @@ public class Camera
 
         try
         {
-
             object.put("REQUEST:", "position");
 
             //Erwarte: {A: position} {x = 11} {y = 22}
             try
             {
                 byte[] data = object.toString().getBytes("utf-8");
-                new Send(data, ip, 10001).start();
+                new Send(data, ip, tcpPortRequest).start();
                 //receive();
 
                 //Wenn antwort da
@@ -122,8 +121,6 @@ public class Camera
                 //e.printStackTrace();
                 Log.e(LOG_TAG, "Failed to create request", e);
             }
-
-
         }
         catch (JSONException e)
         {

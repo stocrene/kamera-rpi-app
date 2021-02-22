@@ -2,6 +2,7 @@ package projekt.monitor.ui.monitor;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,9 +37,16 @@ public class DialogRenameFragment extends DialogFragment
                 .setPositiveButton(R.string.rename, null)
                 .setNegativeButton(R.string.cancel, null);
         AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener()
+        {
+            @Override
+            public void onShow(DialogInterface dialog)
+            {
+                textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_rename_position);
+                textInputLayout.getEditText().setText(position);
+            }
+        });
         dialog.show();
-        textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_rename_position);
-        //textInputLayout.getEditText().setText(position);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
         {
             @Override
