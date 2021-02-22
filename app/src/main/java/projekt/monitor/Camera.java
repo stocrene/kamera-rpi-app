@@ -137,7 +137,6 @@ class Request extends Thread
 {
     private String ip;
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
-    private byte[] datain;
     private Socket socket;
     private int tcpPortRequest = 10001;
     private boolean socketRunning = false;
