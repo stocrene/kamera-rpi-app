@@ -36,8 +36,10 @@ import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.transition.TransitionInflater;
+import projekt.monitor.Camera;
 import projekt.monitor.MainViewModel;
 
 import projekt.monitor.R;
@@ -50,7 +52,7 @@ public class MonitorFragment extends Fragment
     private static String passwort = "";
     private int motionPort = 8081;
 
-
+    private Camera camera;
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -128,10 +130,10 @@ public class MonitorFragment extends Fragment
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        rootView = inflater.inflate(R.layout.fragment_monitor, container, false);
+
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         monitorViewModel = new ViewModelProvider(this).get(MonitorViewModel.class);
-
-        rootView = inflater.inflate(R.layout.fragment_monitor, container, false);
 
         pref = PreferenceManager.getDefaultSharedPreferences(rootView.getContext());
         editor = pref.edit();
@@ -142,7 +144,8 @@ public class MonitorFragment extends Fragment
 
         monitorViewModel.ip = ip;
 
-        String vidAddress = "http://192.168.178.34:8081";
+        camera = new Camera(ip);
+        camera.addPositionObserver(this);
 
 
         if(savedInstanceState == null)
@@ -371,6 +374,7 @@ public class MonitorFragment extends Fragment
 
     public void updatePosition(int x, int y)
     {
+        Log.d(LOG_TAG, "Position: " + String.valueOf(x) + " " + String.valueOf(y));
 
     }
 

@@ -8,6 +8,17 @@
     android:elevation="-34dp"
     tools:context=".ui.monitor.PositionsFragment">
 
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/listView_positions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView_no_positions"
         android:layout_width="wrap_content"
@@ -19,16 +30,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/listView_positions"
         app:layout_constraintStart_toStartOf="@+id/listView_positions"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/listView_positions"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

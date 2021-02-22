@@ -187,7 +187,7 @@ class Repeat extends Thread
     ButtonsFragment buttonsFragment = new ButtonsFragment();
     private int x, y;
 
-    Camera camera = new Camera(buttonsFragment.ip, 10000);
+    Camera camera = new Camera(buttonsFragment.ip);
 
     Repeat(int x, int y)
     {
@@ -207,7 +207,7 @@ class Repeat extends Thread
 
             } catch (Exception e)
             {
-                Log.e(LOG_TAG, "Thread Problem");
+                Log.e(LOG_TAG, "Thread error");
 
             }
 
