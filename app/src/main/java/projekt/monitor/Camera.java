@@ -38,14 +38,12 @@ public class Camera
         this.ip = ip;
         x_pos = 0;
         y_pos = 0;
-/*
-        try {
-            socket = new Socket(ip, tcpPort);
-            socketRunning = true;
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Socket error", e);
-        }
-*/
+
+    }
+
+    public Camera()
+    {
+        ip = "127.0.0.1";
     }
 
     //Überträgt die gewünschte Soll-Position
@@ -94,7 +92,7 @@ public class Camera
             {
                 byte[] data = object.toString().getBytes("utf-8");
                 Log.d(LOG_TAG, object.toString());
-                new Send(data, ip, tcpPort).start();
+                //new Send(data, ip, tcpPort).start();
                 requestPosition();
             }
             catch (UnsupportedEncodingException e)
@@ -114,43 +112,8 @@ public class Camera
 
     public void requestPosition()
     {
-
         new Request(ip).start();
 
-
-
-        /*
-        final JSONObject object = new JSONObject();
-
-        try
-        {
-            object.put("REQUEST:", "position");
-            //Erwarte: {A: position} {x = 11} {y = 22}
-            try
-            {
-                byte[] data = object.toString().getBytes("utf-8");
-                Log.d(LOG_TAG, object.toString());
-                //new Send(data, ip, 10001).start();
-                //receive();
-
-                //Wenn antwort da
-                //if ()
-                //updatePosition();
-            }
-            catch (UnsupportedEncodingException e)
-            {
-                Log.e(LOG_TAG, "Failed to create request", e);
-            }
-
-
-        }
-        catch (JSONException e)
-        {
-            //e.printStackTrace();
-            Log.e(LOG_TAG, "Failed to create JSONObject", e);
-        }
-
-         */
     }
 
 
@@ -159,11 +122,11 @@ public class Camera
         this.monitorFragment = monitorFragment;
     }
 
-    private void updatePosition()
+    private void updatePosition(int x, int y)
     {
         if (monitorFragment != null)
         {
-            monitorFragment.updatePosition(x_pos, y_pos);
+            monitorFragment.updatePosition(x, y);
         }
 
     }
@@ -184,6 +147,8 @@ class Request extends Thread
     private int tcpPortRequest = 10001;
     private boolean socketRunning = false;
     private Socket clientSocket;
+    private int x = 0;
+    private int y = 0;
 
     public Request(String ip)
     {
@@ -212,13 +177,25 @@ class Request extends Thread
                     OutputStream output = socket.getOutputStream();
                     output.write(data);
 
-                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String strInput = null;
                     while ((strInput = in.readLine()) != null)
                     {
                         Log.d(LOG_TAG, strInput);
-                    }
+                        JSONObject object1 = new JSONObject(strInput);
 
+                        if ((object1.get("Answer").toString()).equals("position"))
+                        {
+                            x = Integer.valueOf(object1.get("x").toString());
+                            //y = Integer.valueOf(object1.get("y").toString());
+
+                        }
+                        else
+                        {
+                            Log.d(LOG_TAG, "Objekt passt nicht mit Erwartetem Wert überein");
+                        }
+
+                    }
 
                 }
                 catch (UnsupportedEncodingException e)
@@ -241,17 +218,7 @@ class Request extends Thread
             Log.e(LOG_TAG, "Socket error", e);
         }
 
-        /*
-        try
-        {
-            InputStream input = socket.getInputStream();
-            input.read(datain);
-        }
-        catch (IOException e)
-        {
-            Log.e(LOG_TAG, "Failed to get socket InputStream", e);
-        }
-        */
+
 
     }
 /*
