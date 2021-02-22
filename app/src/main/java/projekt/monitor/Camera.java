@@ -12,6 +12,12 @@ import java.net.Socket;
 import projekt.monitor.ui.monitor.ButtonsFragment;
 import projekt.monitor.ui.monitor.MonitorFragment;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 
 public class Camera
 {
@@ -25,6 +31,7 @@ public class Camera
     private MonitorFragment monitorFragment = null;
 
 
+    //private Socket socket;
 
     public Camera(String ip, int tcpPort)
     {
@@ -32,6 +39,14 @@ public class Camera
         this.ip = ip;
         x_pos = 0;
         y_pos = 0;
+/*
+        try {
+            socket = new Socket(ip, tcpPort);
+            socketRunning = true;
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Socket error", e);
+        }
+*/
     }
 
     //Überträgt die gewünschte Soll-Position
@@ -81,13 +96,13 @@ public class Camera
                 byte[] data = object.toString().getBytes("utf-8");
                 Log.d(LOG_TAG, object.toString());
                 new Send(data, ip, tcpPort).start();
+                requestPosition();
             }
             catch (UnsupportedEncodingException e)
             {
                 //e.printStackTrace();
                 Log.e(LOG_TAG, "Failed to create data", e);
             }
-
 
         }
         catch(JSONException e)
@@ -97,20 +112,26 @@ public class Camera
     }
 
     //Fragt beim Raspberry aktuelle Position an
+
     public void requestPosition()
     {
+
+        new Request("192.168.1.13", 10001).start();
+
+
+
+        /*
         final JSONObject object = new JSONObject();
 
         try
         {
-
             object.put("REQUEST:", "position");
-
             //Erwarte: {A: position} {x = 11} {y = 22}
             try
             {
                 byte[] data = object.toString().getBytes("utf-8");
-                new Send(data, ip, 10001).start();
+                Log.d(LOG_TAG, object.toString());
+                //new Send(data, ip, 10001).start();
                 //receive();
 
                 //Wenn antwort da
@@ -119,7 +140,6 @@ public class Camera
             }
             catch (UnsupportedEncodingException e)
             {
-                //e.printStackTrace();
                 Log.e(LOG_TAG, "Failed to create request", e);
             }
 
@@ -130,6 +150,8 @@ public class Camera
             //e.printStackTrace();
             Log.e(LOG_TAG, "Failed to create JSONObject", e);
         }
+
+         */
     }
 
 
@@ -154,7 +176,7 @@ public class Camera
 
 }
 
-class Receive extends Thread
+class Request extends Thread
 {
     private String ip;
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
@@ -162,8 +184,9 @@ class Receive extends Thread
     private Socket socket;
     private int tcpPort;
     private boolean socketRunning = false;
+    private Socket clientSocket;
 
-    public Receive(String ip, int tcpPort)
+    public Request(String ip, int tcpPort)
     {
         this.ip = ip;
         this.tcpPort = tcpPort;
@@ -171,21 +194,47 @@ class Receive extends Thread
 
     public void run()
     {
-        Log.d(LOG_TAG, "Dateien werden empfangen");
+        final JSONObject object = new JSONObject();
+
         try
         {
+            //Verbindungsaufbau
+            Log.d(LOG_TAG, "Verbindungsaufbau");
             socket = new Socket(ip, tcpPort);
             socketRunning = true;
+            Log.d(LOG_TAG, "Verbindung aufgebaut");
 
             try
             {
-                InputStream input = socket.getInputStream();
-                input.read(datain);
+                object.put("REQUEST:", "position");
+                try
+                {
+                    byte[] data = object.toString().getBytes("utf-8");
+                    Log.d(LOG_TAG, object.toString());
+                    OutputStream output = socket.getOutputStream();
+                    output.write(data);
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    String strInput = null;
+                    while ((strInput = in.readLine()) != null)
+                    {
+                        Log.d(LOG_TAG, strInput);
+                    }
+
+
+                }
+                catch (UnsupportedEncodingException e)
+                {
+                    Log.e(LOG_TAG, "Failed to create request", e);
+                }
+
             }
-            catch (IOException e)
+            catch (JSONException e)
             {
-                Log.e(LOG_TAG, "Failed to get socket InputStream", e);
+                //e.printStackTrace();
+                Log.e(LOG_TAG, "Failed to create JSONObject", e);
             }
+
 
             socket.close();
         }
@@ -193,13 +242,26 @@ class Receive extends Thread
         {
             Log.e(LOG_TAG, "Socket error", e);
         }
-    }
 
+        /*
+        try
+        {
+            InputStream input = socket.getInputStream();
+            input.read(datain);
+        }
+        catch (IOException e)
+        {
+            Log.e(LOG_TAG, "Failed to get socket InputStream", e);
+        }
+        */
+
+    }
+/*
     public byte[] get_data()
     {
         return datain;
     }
-
+*/
 }
 
 class Send extends Thread
