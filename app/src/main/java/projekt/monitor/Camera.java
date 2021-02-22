@@ -168,7 +168,7 @@ class Receive extends Thread
 {
     private String ip;
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
-    private byte[] data;
+    private byte[] datain;
     private Socket socket;
     private int tcpPort;
     private boolean socketRunning = false;
@@ -190,7 +190,7 @@ class Receive extends Thread
             try
             {
                 InputStream input = socket.getInputStream();
-
+                input.read(datain);
             }
             catch (IOException e)
             {
@@ -203,6 +203,11 @@ class Receive extends Thread
         {
             Log.e(LOG_TAG, "Socket error", e);
         }
+    }
+
+    public byte[] get_data()
+    {
+        return datain;
     }
 
 }

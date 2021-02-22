@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,22 +51,11 @@ public class JoystickFragment extends Fragment
 
                     camera.sendDirection((int)x, (int)y);
 
-                    /*
-                    if(angle < 20 || angle > 340)
-                    {
-                        camera.sendDirection(1,0);
-                    }
-                    else if(angle > 20 && angle < 70)
-                    {
-                        camera.sendDirection(1,0);
-                    }
-
-                     */
                 }
 
 
             }
-        }, 200);
+        }, 100);
 
         return rootView;
     }

@@ -13,24 +13,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.github.niqdev.mjpeg.MjpegView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
 
 import androidx.lifecycle.ViewModelProvider;
 import projekt.monitor.R;
 import projekt.monitor.Camera;
-import projekt.monitor.ui.monitor.MonitorViewModel;
-
 
 
 public class ButtonsFragment extends Fragment
 {
-
     private ImageButton imageButtonL;
     private ImageButton imageButtonR;
     private ImageButton imageButtonU;
@@ -44,20 +35,17 @@ public class ButtonsFragment extends Fragment
     private Socket socket;
     private int tcpPort = 10000;
     private boolean socketRunning = false;
-    private int posX = 0;
-    private int posY = 0;
+    private int x = 70;
+    private int y = 70;
+
+    public static boolean button_is_press = false;
+    public static String ip;
+
 
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
 
     private View rootView;
     private View parentView;
-    //private MonitorViewModel monitorViewModel
-
-
-    //Statische IP - Muss noch geändert werden, derzeit aber zu Testzwecke vorhanden
-    //MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
-    //Camera camera = new Camera(monitorViewModel.ip, tcpPort);
-    //Camera camera = new Camera("192.168.1.15", tcpPort);
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -70,7 +58,7 @@ public class ButtonsFragment extends Fragment
                              Bundle savedInstanceState)
     {
         MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
-        Camera camera = new Camera(monitorViewModel.ip, tcpPort);
+        ip = monitorViewModel.ip;
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_buttons, container, false);
         parentView = getParentFragment().getView();
@@ -100,17 +88,14 @@ public class ButtonsFragment extends Fragment
                         if(true)
                         {
                             Log.d(LOG_TAG, "Set Position");
-                            camera.sendDirection(70,0);
-
-
-                            //new SetPositionThread(posX, posY).start();
-                            //posX = -1*(posX-180);
-                            //posY = -1*(posY-180);
+                            button_is_press = true;
+                            new Repeat(x,0).start();
                         }
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowR.setVisibility(View.INVISIBLE);
                         Log.d(LOG_TAG, "Button Right Release");
+                        button_is_press = false;
                     }
                 }
                 return false;
@@ -130,11 +115,14 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowL.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Left Touch");
-                        camera.sendDirection(-70,0);
+                        button_is_press = true;
+                        new Repeat(-x,0).start();
+
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowL.setVisibility(View.INVISIBLE);
                         Log.d(LOG_TAG, "Button Left Release");
+                        button_is_press = false;
                     }
                 }
                 return false;
@@ -152,11 +140,13 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowU.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Up Touch");
-                        camera.sendDirection(0,70);
+                        button_is_press = true;
+                        new Repeat(0,y).start();
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowU.setVisibility(View.INVISIBLE);
                         Log.d(LOG_TAG, "Button Up Release");
+                        button_is_press = false;
                     }
                 }
                 return false;
@@ -174,11 +164,14 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowD.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Down Touch");
-                        camera.sendDirection(0,-70);
+                        button_is_press = true;
+                        new Repeat(0,-y).start();
+
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowD.setVisibility(View.INVISIBLE);
                         Log.d(LOG_TAG, "Button Down Release");
+                        button_is_press = false;
                     }
                 }
                 return false;
@@ -188,59 +181,46 @@ public class ButtonsFragment extends Fragment
         return rootView;
     }
 
-    /*
+}
 
-    class SetPositionThread extends Thread
+
+class Repeat extends Thread
+{
+    private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
+    ButtonsFragment buttonsFragment = new ButtonsFragment();
+    private int x, y;
+
+    Camera camera = new Camera(buttonsFragment.ip, 10000);
+
+    Repeat(int x, int y)
     {
-        private int x;
-        private int y;
 
-        SetPositionThread(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
+        this.x = x;
+        this.y = y;
+    }
 
-        public void run()
+    public void run()
+    {
+
+        while(buttonsFragment.button_is_press)
         {
             try
             {
-                MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
-                socket = new Socket(monitorViewModel.ip, tcpPort);
-                socketRunning = true;
+                camera.sendDirection(x,y);
+                Thread.sleep(100);
 
-                try
-                {
-                    final JSONObject object = new JSONObject();
-
-                    object.put("X", x);
-                    object.put("Y", y);
-
-                    try
-                    {
-                        Log.d(LOG_TAG, "Try send data");
-                        OutputStream output = socket.getOutputStream();
-                        byte[] data = object.toString().getBytes("utf-8");
-                        output.write(data);
-                    }
-                    catch (IOException e)
-                    {
-                        Log.e(LOG_TAG, "Failed to get socket OutputStream", e);
-                    }
-                }
-                catch (JSONException e)
-                {
-                    Log.e(LOG_TAG, "Failed to create JSONObject", e);
-                }
-                socket.close();
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
-                Log.e(LOG_TAG, "Socket error", e);
+                Log.e(LOG_TAG, "Thread Problem");
+
             }
 
         }
     }
-    */
+
+
+
+
+
 
 }
