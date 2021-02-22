@@ -111,7 +111,7 @@ public class Camera
             {
                 byte[] data = object.toString().getBytes("utf-8");
                 new Send(data, ip, 10001).start();
-                receive();
+                //receive();
 
                 //Wenn antwort da
                 //if ()
@@ -132,12 +132,6 @@ public class Camera
         }
     }
 
-    //UNKLAR
-    //Empfängt Daten - derzeit nur Position
-    public void receive()
-    {
-
-    }
 
     public void addPositionObserver(MonitorFragment monitorFragment)
     {

@@ -201,7 +201,6 @@ class Repeat extends Thread
 
     public void run()
     {
-
         while(buttonsFragment.button_is_press)
         {
             try
@@ -217,10 +216,5 @@ class Repeat extends Thread
 
         }
     }
-
-
-
-
-
 
 }
