@@ -41,7 +41,7 @@ public class InputFragment extends Fragment
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_input, container, false);
 
-        monitorViewModel = new ViewModelProvider(this).get(MonitorViewModel.class);
+        monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
 
         camera = new Camera(monitorViewModel.ip);
 
