@@ -38,16 +38,23 @@
 
     <!-- fragment_positions -->
     <string name="no_positions">Keine Positionen gespeichert</string>
-    <!-- fragment_positions - delete dialog -->
-    <string name="delete_dialog_title">Position löschen</string>
+
+    <!-- fragment_dialog_delete_position -->
+    <string name="dialog_delete_position_title">Position löschen</string>
     <string name="delete">Löschen</string>
     <string name="toast_item_deleted">Position gelöscht</string>
 
     <!-- fragment_dialog_add_position -->
     <string name="dialog_textField_hint">Name der Position</string>
     <string name="dialog_helperText">Vergeben Sie einen Namen für die Position</string>
-    <string name="dialog_add_location">Aktuelle Position speichern</string>
+    <string name="dialog_add_position_title">Aktuelle Position speichern</string>
     <string name="error_no_name">Geben Sie einen Namen für die Position ein</string>
     <string name="cancel">Abbrechen</string>
     <string name="save">Speichern</string>
+    <string name="toast_item_added">Position gespeichert</string>
+
+    <!-- fragment_dialog_rename_position -->
+    <string name="dialog_rename_position_title">Position umbenennen</string>
+    <string name="rename">Umbenennen</string>
+    <string name="toast_item_renamed">Position umbenannt</string>
 </resources>

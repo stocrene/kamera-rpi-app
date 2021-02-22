@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Positions
 {
-    private static String KEY = "listPositions";
-    private static String LIST_NAME = "positions";
+    private final String KEY = "listPositions";
+    private final String LIST_NAME = "positions";
 
     public void addPosition(String position, Context mContext)
     {

@@ -1,12 +1,13 @@
 package projekt.monitor.ui.monitor;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -18,22 +19,16 @@ import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import projekt.monitor.R;
@@ -70,8 +65,12 @@ public class PositionsFragment extends Fragment
             button_add_position.setVisibility(View.INVISIBLE);
             button_add_position_visible = true;
         }
+        setList(0);
+        return rootView;
+    }
 
-
+    private void setList(int position)
+    {
         List<String> positionsList = positions.getPositions(getContext());
         if(positionsList != null)
         {
@@ -86,6 +85,7 @@ public class PositionsFragment extends Fragment
 
             SwipeMenuListView listView = (SwipeMenuListView) rootView.findViewById(R.id.listView_positions);
             listView.setAdapter(listAdapter);
+            listView.setSelection(position-1);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
@@ -144,40 +144,61 @@ public class PositionsFragment extends Fragment
                     {
                         case 0:
                             //edit
-                            //edit(item);
-                            Log.d(LOG_TAG, "edit");
+                            DialogRenameFragment dialogRenameFragment = new DialogRenameFragment(pos);
+                            dialogRenameFragment.show(getActivity().getSupportFragmentManager(), "renamePosition");
+                            setList(position);
                             break;
                         case 1:
                             //delete
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setCancelable(false);
-                            builder.setTitle(R.string.delete_dialog_title);
-                            String message = "Position " + "<b>" + positionsList.get(position) + "</b>" + " wirklich löschen?";
-                            builder.setMessage(Html.fromHtml(message));
-                            builder.setNegativeButton(R.string.cancel, null);
-                            builder.setPositiveButton(R.string.delete, new AlertDialog.OnClickListener()
-                            {
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    positions.removePosition(pos, getContext());
-                                    positionsList.remove(position);
-                                    listView.setAdapter(listAdapter);
-                                    listView.setSelection(position-1);
-                                    Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
-                                }});
-                            builder.show();
-                            break;
+                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment();
+                            dialogDeleteFragment.show(getActivity().getSupportFragmentManager(), "deletePosition");
+                            setList(position);
+//                            AlertDialog dialog = dialogDeleteFragment.getDialog();
+//                            dialog.show();
+//                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+//                            {
+//                                @Override
+//                                public void onClick(View v)
+//                                {
+//                                    TextInputLayout textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_name);
+//                                    String posName = textInputLayout.getEditText().getText().toString();
+//                                    if(posName.equals(""))
+//                                    {
+//                                        Log.d(LOG_TAG, "TextField empty");
+//                                        textInputLayout.setErrorEnabled(true);
+//                                        textInputLayout.setError(getResources().getString(R.string.error_no_name));
+//                                    }
+//                                    else
+//                                    {
+//                                        dialog.dismiss();
+//                                        Positions positions = new Positions();
+//                                        positions.addPosition(posName, getContext());
+//                                        Toast.makeText(getContext(), getResources().getString(R.string.toast_item_added), Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }
+//                            });
+//                            String message = "Position " + "<b>" + positionsList.get(position) + "</b>" + " wirklich löschen?";
+//
+//                                public void onClick(DialogInterface dialog, int which)
+//                                {
+//                                    positions.removePosition(pos, getContext());
+//                                    positionsList.remove(position);
+//                                    listView.setAdapter(listAdapter);
+//                                    listView.setSelection(position-1);
+//                                    Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
+//                                }});
+//                            builder.show();
+//                            break;
                     }
                     return false;
                 }
             });
-            }
+        }
         else
         {
             rootView.findViewById(R.id.textView_no_positions).setVisibility(View.VISIBLE);
         }
-        // Inflate the layout for this fragment
-        return rootView;
+
     }
 
     private int dp2px(int dp)

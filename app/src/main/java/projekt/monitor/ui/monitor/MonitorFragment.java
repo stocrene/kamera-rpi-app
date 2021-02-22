@@ -258,8 +258,8 @@ public class MonitorFragment extends Fragment
             @Override
             public void onClick(View w)
             {
-                DialogFragment dialogLocationFragment = new DialogPositionFragment();
-                dialogLocationFragment.show(getActivity().getSupportFragmentManager(), "addLocation");
+                DialogPositionFragment dialogPositionFragment = new DialogPositionFragment();
+                dialogPositionFragment.show(getActivity().getSupportFragmentManager(), "addPosition");
             }
         });
 

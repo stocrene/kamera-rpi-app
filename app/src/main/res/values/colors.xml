@@ -12,11 +12,13 @@
 
     <!-- fragment_monitor -->
     <color name="grey">#AB000000</color>
-    <color name="icon_no_connection">#45000000</color>
+    <color name="icon_no_connection">#2A000000</color>
     <!-- TabLayout -->
     <color name="line">#A6A6A6</color>
     <color name="tablayout_color_active">@color/colorPrimary</color>
     <color name="tablayout_color_inactive">#74000000</color>
     <!-- arrows -->
     <color name="red">#CD382D</color>
+
+    <color name="joystick">#676767</color>
 </resources>

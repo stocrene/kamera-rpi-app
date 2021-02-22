@@ -7,14 +7,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.*;
 import android.util.Log;
-import android.view.inspector.StaticInspectionCompanionProvider;
-
 import java.net.Socket;
-
 
 import projekt.monitor.ui.monitor.ButtonsFragment;
 import projekt.monitor.ui.monitor.MonitorFragment;
-import projekt.monitor.ui.monitor.MonitorViewModel;
 
 
 public class Camera

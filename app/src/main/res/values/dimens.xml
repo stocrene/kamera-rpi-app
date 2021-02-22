@@ -22,9 +22,14 @@
 
     <dimen name="icon_no_connection">55dp</dimen>
 
+    <!-- fragment dialog -->
+    <dimen name="dialog_title_height">50dp</dimen>
+
     <!-- fragment_monitor - TabLayout -->
     <dimen name="tabLayout_tiny_padding">0dp</dimen>
     <dimen name="tabLayout_icon">28dp</dimen>
     <dimen name="tabLayout_label_font_size">10sp</dimen>
+
+    <dimen name="list_item_height">70dp</dimen>
 
 </resources>
