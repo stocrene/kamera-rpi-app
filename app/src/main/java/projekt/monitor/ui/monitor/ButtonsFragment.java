@@ -85,12 +85,9 @@ public class ButtonsFragment extends Fragment
                     {
                         imageViewArrowR.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Right Touch");
-                        if(true)
-                        {
-                            Log.d(LOG_TAG, "Set Position");
-                            button_is_press = true;
-                            new Repeat(x,0).start();
-                        }
+                        button_is_press = true;
+                        new Repeat(x,0).start();
+
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowR.setVisibility(View.INVISIBLE);
@@ -203,9 +200,9 @@ class Repeat extends Thread
     {
         while(buttonsFragment.button_is_press)
         {
+            camera.sendDirection(x,y);
             try
             {
-                camera.sendDirection(x,y);
                 Thread.sleep(100);
 
             } catch (Exception e)
