@@ -31,7 +31,6 @@ public class Camera
     private MonitorFragment monitorFragment = null;
 
 
-    //private Socket socket;
 
     public Camera(String ip)
     {
@@ -64,7 +63,6 @@ public class Camera
             }
             catch (UnsupportedEncodingException e)
             {
-                //e.printStackTrace();
                 Log.e(LOG_TAG, "Failed to create data", e);
             }
 
@@ -72,7 +70,6 @@ public class Camera
         }
         catch (JSONException e)
         {
-            //e.printStackTrace();
             Log.e(LOG_TAG, "Failed to create JSONObject", e);
         }
 
@@ -92,12 +89,11 @@ public class Camera
             {
                 byte[] data = object.toString().getBytes("utf-8");
                 Log.d(LOG_TAG, object.toString());
-                //new Send(data, ip, tcpPort).start();
+                new Send(data, ip, tcpPort).start();
                 requestPosition();
             }
             catch (UnsupportedEncodingException e)
             {
-                //e.printStackTrace();
                 Log.e(LOG_TAG, "Failed to create data", e);
             }
 
@@ -109,7 +105,6 @@ public class Camera
     }
 
     //Fragt beim Raspberry aktuelle Position an
-
     public void requestPosition()
     {
         new Request(ip).start();
@@ -122,7 +117,7 @@ public class Camera
         this.monitorFragment = monitorFragment;
     }
 
-    private void updatePosition(int x, int y)
+    public void updatePosition(int x, int y)
     {
         if (monitorFragment != null)
         {
@@ -149,6 +144,7 @@ class Request extends Thread
     private Socket clientSocket;
     private int x = 0;
     private int y = 0;
+    private Camera camera;
 
     public Request(String ip)
     {
@@ -188,6 +184,7 @@ class Request extends Thread
                         {
                             x = Integer.valueOf(object1.get("x").toString());
                             //y = Integer.valueOf(object1.get("y").toString());
+                            camera.updatePosition(x,y);
 
                         }
                         else
@@ -206,7 +203,6 @@ class Request extends Thread
             }
             catch (JSONException e)
             {
-                //e.printStackTrace();
                 Log.e(LOG_TAG, "Failed to create JSONObject", e);
             }
 
@@ -221,12 +217,6 @@ class Request extends Thread
 
 
     }
-/*
-    public byte[] get_data()
-    {
-        return datain;
-    }
-*/
 }
 
 class Send extends Thread
