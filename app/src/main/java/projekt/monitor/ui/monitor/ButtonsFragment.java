@@ -186,7 +186,7 @@ class Repeat extends Thread
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
     ButtonsFragment buttonsFragment = new ButtonsFragment();
     private int x, y;
-    private final Camera camera = new Camera(buttonsFragment.ip);
+    //private final Camera camera = new Camera(buttonsFragment.ip);
 
     Repeat(int x, int y)
     {
@@ -198,7 +198,8 @@ class Repeat extends Thread
     {
         while(buttonsFragment.button_is_press)
         {
-            camera.sendDirection(x, y);
+            //camera.sendDirection(x, y);
+            new Camera(buttonsFragment.ip).sendDirection(x,y);
             try
             {
                 Thread.sleep(100);
