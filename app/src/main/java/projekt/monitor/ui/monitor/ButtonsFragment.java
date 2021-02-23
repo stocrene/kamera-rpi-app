@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.github.niqdev.mjpeg.MjpegView;
 import java.net.Socket;
@@ -31,7 +30,6 @@ public class ButtonsFragment extends Fragment
     private ImageView imageViewArrowU;
     private ImageView imageViewArrowD;
     private MjpegView mjpegView;
-    private TextView textView_pan_value;
 
     private Socket socket;
     private int tcpPort = 10000;
@@ -65,10 +63,9 @@ public class ButtonsFragment extends Fragment
         rootView = inflater.inflate(R.layout.fragment_buttons, container, false);
         parentView = getParentFragment().getView();
 
-        camera = new Camera(ip, monitorViewModel);
+        camera = new Camera(ip);
         camera.addPositionObserver((MonitorFragment)getParentFragment());
 
-        textView_pan_value = (TextView) parentView.findViewById(R.id.textView_pan_value);
         imageButtonL = (ImageButton) rootView.findViewById(R.id.imageButtonL);
         imageButtonR = (ImageButton) rootView.findViewById(R.id.imageButtonR);
         imageButtonU = (ImageButton) rootView.findViewById(R.id.imageButtonU);
@@ -94,9 +91,8 @@ public class ButtonsFragment extends Fragment
                         Log.d(LOG_TAG, "Button Right Touch");
                         button_is_press = true;
                         new Repeat(x,0, camera).start();
-                        textView_pan_value.setText("asdf");
-
-                    } else if (event.getAction() == MotionEvent.ACTION_UP)
+                    }
+                    else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowR.setVisibility(View.INVISIBLE);
                         Log.d(LOG_TAG, "Button Right Release");
@@ -122,8 +118,8 @@ public class ButtonsFragment extends Fragment
                         Log.d(LOG_TAG, "Button Left Touch");
                         button_is_press = true;
                         new Repeat(-x,0, camera).start();
-
-                    } else if (event.getAction() == MotionEvent.ACTION_UP)
+                    }
+                    else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowL.setVisibility(View.INVISIBLE);
                         Log.d(LOG_TAG, "Button Left Release");
@@ -148,7 +144,8 @@ public class ButtonsFragment extends Fragment
                         Log.d(LOG_TAG, "Button Up Touch");
                         button_is_press = true;
                         new Repeat(0,y, camera).start();
-                    } else if (event.getAction() == MotionEvent.ACTION_UP)
+                    }
+                    else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowU.setVisibility(View.INVISIBLE);
                         Log.d(LOG_TAG, "Button Up Release");
@@ -173,8 +170,8 @@ public class ButtonsFragment extends Fragment
                         Log.d(LOG_TAG, "Button Down Touch");
                         button_is_press = true;
                         new Repeat(0,-y, camera).start();
-
-                    } else if (event.getAction() == MotionEvent.ACTION_UP)
+                    }
+                    else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowD.setVisibility(View.INVISIBLE);
                         Log.d(LOG_TAG, "Button Down Release");
@@ -187,7 +184,6 @@ public class ButtonsFragment extends Fragment
 
         return rootView;
     }
-
 }
 
 
@@ -199,6 +195,7 @@ class Repeat extends Thread
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
     ButtonsFragment buttonsFragment = new ButtonsFragment();
     private int x, y;
+    private final int interval = 100;
     private Camera camera;
 
 
@@ -217,8 +214,9 @@ class Repeat extends Thread
             camera.requestPosition();
             try
             {
-                Thread.sleep(100);
-            } catch (Exception e)
+                Thread.sleep(interval);
+            }
+            catch (Exception e)
             {
                 Log.e(LOG_TAG, "Thread error");
             }

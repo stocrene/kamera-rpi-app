@@ -18,36 +18,41 @@ import projekt.monitor.R;
 public class DialogDeleteFragment extends DialogFragment
 {
     private String position;
-    private PositionsFragment positionsFragment;
+    private int x, y;
     private final String LOG_TAG = DialogDeleteFragment.class.getSimpleName();
 
-    public DialogDeleteFragment(String position, PositionsFragment positionsFragment)
+    public DialogDeleteFragment(String position, int x, int y)
     {
         this.position = position;
-        this.positionsFragment = positionsFragment;
+        this.x = x;
+        this.y = y;
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
         setCancelable(false);
         String message = "Position " + "<b>" + position + "</b>" + " wirklich löschen?";
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.fragment_dialog_delete_position, null))
                 .setCancelable(false)
-                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
                         Positions positions = new Positions();
-                        positions.removePosition(position, getContext());
-                        //positionsFragment.updateList(2);
+                        positions.removePosition(position, x, y, getContext());
                         Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton(R.string.cancel, null);
         AlertDialog dialog = builder.create();
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        dialog.setOnShowListener(new DialogInterface.OnShowListener()
+        {
             @Override
-            public void onShow(DialogInterface dialog) {
+            public void onShow(DialogInterface dialog)
+            {
                 TextView textView_message = (TextView) getDialog().findViewById(R.id.textView_message);
                 textView_message.setText(Html.fromHtml(message));
             }

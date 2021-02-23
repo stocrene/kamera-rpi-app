@@ -43,7 +43,7 @@ public class InputFragment extends Fragment
 
         monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
 
-        camera = new Camera(monitorViewModel.ip, monitorViewModel);
+        camera = new Camera(monitorViewModel.ip);
         camera.addPositionObserver((MonitorFragment)getParentFragment());
 
          slider_pan = (Slider)rootView.findViewById(R.id.slider_pan);

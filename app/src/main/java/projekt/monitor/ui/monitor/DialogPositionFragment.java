@@ -19,6 +19,13 @@ import projekt.monitor.Positions;
 public class DialogPositionFragment extends DialogFragment
 {
     private final String LOG_TAG = DialogPositionFragment.class.getSimpleName();
+    private int x, y;
+
+    public DialogPositionFragment(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -49,7 +56,7 @@ public class DialogPositionFragment extends DialogFragment
                 {
                     dialog.dismiss();
                     Positions positions = new Positions();
-                    positions.addPosition(posName, getContext());
+                    positions.addPosition(posName, x, y, getContext());
                     Toast.makeText(getContext(), getResources().getString(R.string.toast_item_added), Toast.LENGTH_SHORT).show();
                 }
             }

@@ -17,8 +17,8 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <!-- fragment_monitor -->
-    <string name="pan">Schwenk</string>
-    <string name="tild">Neigung</string>
+    <string name="pan">Schwenk:</string>
+    <string name="tild">Neigung:</string>
     <string name="camera_not_connected">Kamera nicht verbunden</string>
     <!-- fragment_monitor - dialog -->
     <string name="dialog_no_connection">Die Kamera wurde nicht gefunden</string>

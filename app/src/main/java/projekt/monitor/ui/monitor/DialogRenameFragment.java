@@ -18,12 +18,15 @@ import projekt.monitor.R;
 public class DialogRenameFragment extends DialogFragment
 {
     private String position;
+    private int x, y;
     private TextInputLayout textInputLayout;
     private final String LOG_TAG = DialogRenameFragment.class.getSimpleName();
 
-    public DialogRenameFragment(String position)
+    public DialogRenameFragment(String position, int x, int y)
     {
         this.position = position;
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -63,8 +66,8 @@ public class DialogRenameFragment extends DialogFragment
                 {
                     dialog.dismiss();
                     Positions positions = new Positions();
-                    positions.removePosition(position, getContext());
-                    positions.addPosition(posName, getContext());
+                    positions.removePosition(position, x, y, getContext());
+                    positions.addPosition(posName, x, y, getContext());
                     Toast.makeText(getContext(), getResources().getString(R.string.toast_item_renamed), Toast.LENGTH_SHORT).show();
                 }
             }

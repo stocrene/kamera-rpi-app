@@ -1,5 +1,6 @@
 package projekt.monitor.ui.monitor;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,8 +59,8 @@ public class MonitorFragment extends Fragment
     private MjpegView mjpegView;
     private View rootView;
 
-    private int posX = 0;
-    private int posY = 0;
+    private int posX = -1;
+    private int posY = -1;
 
     private MainViewModel mainViewModel;
     private MonitorViewModel monitorViewModel;
@@ -143,9 +145,8 @@ public class MonitorFragment extends Fragment
 
         monitorViewModel.ip = ip;
 
-        camera = new Camera(ip, monitorViewModel);
-        //camera.addPositionObserver(this);
-
+        camera = new Camera(ip);
+        camera.addPositionObserver(this);
 
         if(savedInstanceState == null)
         {
@@ -242,6 +243,8 @@ public class MonitorFragment extends Fragment
         textView_pan_value = (TextView) rootView.findViewById(R.id.textView_pan_value);
         textView_camera_not_connected = (TextView) rootView.findViewById(R.id.textView_camera_not_connected);
 
+        camera.requestPosition();
+
         //DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.red));
         DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), Color.WHITE);
         DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowL.getDrawable()).mutate(), Color.WHITE);
@@ -262,7 +265,7 @@ public class MonitorFragment extends Fragment
             @Override
             public void onClick(View w)
             {
-                DialogPositionFragment dialogPositionFragment = new DialogPositionFragment();
+                DialogPositionFragment dialogPositionFragment = new DialogPositionFragment(posX, posY);
                 dialogPositionFragment.show(getActivity().getSupportFragmentManager(), "addPosition");
             }
         });
@@ -270,9 +273,24 @@ public class MonitorFragment extends Fragment
         return rootView;
     }
 
+
+    public int getX()
+    {
+        return posX;
+    }
+
+    public int getY()
+    {
+        return posY;
+    }
+
     public void updatePosition(int x, int y)
     {
         Log.d(LOG_TAG, "Position: " + String.valueOf(x) + " " + String.valueOf(y));
+
+        posX = x;
+        posY = y;
+
         String spaceX = "";
         String spaceY = " ";
         if(x < 10)
@@ -289,9 +307,17 @@ public class MonitorFragment extends Fragment
             spaceY = "  ";
         }
 
-        //String panVal = spaceX + String.valueOf(x);
-        textView_pan_value.setText(" 32");
-        //textView_tild_value.setText(spaceY + String.valueOf(y));
+        String panVal = spaceX + x;
+        String tildVal = spaceY + y;
+        ((Activity) getContext()).runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                textView_pan_value.setText(panVal);
+                textView_tild_value.setText(tildVal);
+            }
+        });
     }
 
     /*public void sshBefehl(final String ip, final int port, final String username, final String passwort)

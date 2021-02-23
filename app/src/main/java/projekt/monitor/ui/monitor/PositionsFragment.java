@@ -28,6 +28,9 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -139,25 +142,34 @@ public class PositionsFragment extends Fragment
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index)
                 {
                     String pos = positionsList.get(position);
-                    Log.d(LOG_TAG, "index: " + String.valueOf(index));
-                    switch (index)
+
+                    try
                     {
-                        case 0:
-                            //rename
-                            Log.d(LOG_TAG, "rename");
-                            DialogRenameFragment dialogRenameFragment = new DialogRenameFragment(pos);
-                            dialogRenameFragment.show(getActivity().getSupportFragmentManager(), "renamePosition");
-                            updateList(position);
-                            break;
-                        case 1:
-                            //delete
-                            Log.d(LOG_TAG, "delete");
-                            DialogFragment dialogDeleteFragment = new DialogDeleteFragment(pos, asdf);
-                            dialogDeleteFragment.show(getActivity().getSupportFragmentManager(), "deletePosition");
-                            positionsList.clear();
-                            positionsList = positions.getPositions(getContext());
-                            //positionsList.remove(position);
-                            listView.setAdapter(listAdapter);
+                        JSONObject object1 = new JSONObject(pos);
+
+                        pos = object1.get("position").toString();
+                        int x = Integer.valueOf(object1.get("x").toString());
+                        int y = Integer.valueOf(object1.get("y").toString());
+
+                        Log.d(LOG_TAG, "index: " + String.valueOf(index));
+                        switch (index)
+                        {
+                            case 0:
+                                //rename
+                                Log.d(LOG_TAG, "rename");
+                                DialogRenameFragment dialogRenameFragment = new DialogRenameFragment(pos, x, y);
+                                dialogRenameFragment.show(getActivity().getSupportFragmentManager(), "renamePosition");
+                                updateList(position);
+                                break;
+                            case 1:
+                                //delete
+                                Log.d(LOG_TAG, "delete");
+                                DialogFragment dialogDeleteFragment = new DialogDeleteFragment(pos, x, y);
+                                dialogDeleteFragment.show(getActivity().getSupportFragmentManager(), "deletePosition");
+                                positionsList.clear();
+                                positionsList = positions.getPositions(getContext());
+                                //positionsList.remove(position);
+                                listView.setAdapter(listAdapter);
 //                            listAdapter.notifyDataSetChanged();
 //                            listView.setAdapter(listAdapter);
 //                            AlertDialog dialog = dialogDeleteFragment.getDialog();
@@ -195,8 +207,15 @@ public class PositionsFragment extends Fragment
 //                                    Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
 //                                }});
 //                            builder.show();
-                              break;
+                                break;
+                        }
+                     }
+                    catch (JSONException e)
+                    {
+                        Log.e(LOG_TAG, "Failed to create JSONObject", e);
                     }
+
+
                     return false;
                 }
             });
