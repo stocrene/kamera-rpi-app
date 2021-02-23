@@ -38,6 +38,8 @@ public class ButtonsFragment extends Fragment
     private int x = 70;
     private int y = 70;
 
+    private Camera camera;
+
     public static boolean button_is_press = false;
     public static String ip;
 
@@ -63,6 +65,9 @@ public class ButtonsFragment extends Fragment
         rootView = inflater.inflate(R.layout.fragment_buttons, container, false);
         parentView = getParentFragment().getView();
 
+        camera = new Camera(ip);
+        camera.addPositionObserver((MonitorFragment)getParentFragment());
+
         imageButtonL = (ImageButton) rootView.findViewById(R.id.imageButtonL);
         imageButtonR = (ImageButton) rootView.findViewById(R.id.imageButtonR);
         imageButtonU = (ImageButton) rootView.findViewById(R.id.imageButtonU);
@@ -72,7 +77,6 @@ public class ButtonsFragment extends Fragment
         imageViewArrowU = (ImageView)parentView.findViewById(R.id.imageViewArrowU);
         imageViewArrowD = (ImageView)parentView.findViewById(R.id.imageViewArrowD);
         mjpegView = (MjpegView)parentView.findViewById(R.id.mjpegView);
-
 
         imageButtonR.setOnTouchListener(new View.OnTouchListener()
         {
@@ -86,7 +90,7 @@ public class ButtonsFragment extends Fragment
                         imageViewArrowR.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Right Touch");
                         button_is_press = true;
-                        new Repeat(x,0).start();
+                        new Repeat(x,0, camera).start();
 
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
@@ -113,7 +117,7 @@ public class ButtonsFragment extends Fragment
                         imageViewArrowL.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Left Touch");
                         button_is_press = true;
-                        new Repeat(-x,0).start();
+                        new Repeat(-x,0, camera).start();
 
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
@@ -138,7 +142,7 @@ public class ButtonsFragment extends Fragment
                         imageViewArrowU.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Up Touch");
                         button_is_press = true;
-                        new Repeat(0,y).start();
+                        new Repeat(0,y, camera).start();
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         imageViewArrowU.setVisibility(View.INVISIBLE);
@@ -162,7 +166,7 @@ public class ButtonsFragment extends Fragment
                         imageViewArrowD.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Down Touch");
                         button_is_press = true;
-                        new Repeat(0,-y).start();
+                        new Repeat(0,-y, camera).start();
 
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
@@ -186,20 +190,22 @@ class Repeat extends Thread
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
     ButtonsFragment buttonsFragment = new ButtonsFragment();
     private int x, y;
-    //private final Camera camera = new Camera(buttonsFragment.ip);
+    private Camera camera;
 
-    Repeat(int x, int y)
+
+    Repeat(int x, int y, Camera camera)
     {
         this.x = x;
         this.y = y;
+        this.camera = camera;
     }
 
     public void run()
     {
         while(buttonsFragment.button_is_press)
         {
-            //camera.sendDirection(x, y);
-            new Camera(buttonsFragment.ip).sendDirection(x,y);
+            camera.sendDirection(x, y);
+            camera.requestPosition();
             try
             {
                 Thread.sleep(100);

@@ -13,6 +13,7 @@ import projekt.monitor.ui.monitor.MonitorFragment;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 
 public class Camera
@@ -22,7 +23,6 @@ public class Camera
     public int x_pos;
     public int y_pos;
     private MonitorFragment monitorFragment = null;
-
 
 
     public Camera(String ip)
@@ -35,12 +35,13 @@ public class Camera
 
     public Camera()
     {
-        ip = "127.0.0.1";
+        ip = "";
     }
 
     //Überträgt die gewünschte Soll-Position
     public void setTargetPosition(int x, int y)
     {
+        Log.d(LOG_TAG, "setTargetPosition(x,y)");
         final JSONObject object = new JSONObject();
 
         try
@@ -58,8 +59,6 @@ public class Camera
             {
                 Log.e(LOG_TAG, "Failed to create data", e);
             }
-
-
         }
         catch (JSONException e)
         {
@@ -73,6 +72,7 @@ public class Camera
     {
         Log.d(LOG_TAG, "sendDirection(x,y)");
         final JSONObject object = new JSONObject();
+
         try
         {
             object.put("X", x);
@@ -82,7 +82,7 @@ public class Camera
             try
             {
                 byte[] data = object.toString().getBytes("utf-8");
-                Log.d(LOG_TAG, object.toString());
+                //Log.d(LOG_TAG, object.toString());
                 new Send(data, ip).start();
                 //requestPosition();
             }
@@ -100,6 +100,7 @@ public class Camera
     //Fragt beim Raspberry aktuelle Position an
     public void requestPosition()
     {
+        Log.d(LOG_TAG, "requestPosition()");
         new Request(ip, this).start();
     }
 
@@ -111,7 +112,6 @@ public class Camera
 
     public void updatePosition(int x, int y)
     {
-
         if (monitorFragment != null)
         {
             monitorFragment.updatePosition(x, y);
@@ -139,6 +139,7 @@ class Request extends Thread
     public Request(String ip, Camera camera)
     {
         this.ip = ip;
+        this.camera = camera;
     }
 
     public void run()
@@ -172,8 +173,8 @@ class Request extends Thread
 
                         if ((object1.get("ANSWER").toString()).equals("position"))
                         {
-                            x = Integer.valueOf(object1.get("X").toString());
-                            y = Integer.valueOf(object1.get("Y").toString());
+                            x = Integer.valueOf(object1.get("x").toString());
+                            y = Integer.valueOf(object1.get("y").toString());
                             camera.updatePosition(x,y);
                         }
                         else
@@ -186,7 +187,6 @@ class Request extends Thread
                 {
                     Log.e(LOG_TAG, "Failed to create request", e);
                 }
-
             }
             catch (JSONException e)
             {
@@ -220,6 +220,7 @@ class Send extends Thread
     public void run()
     {
         Log.d(LOG_TAG, "Dateien werden gesendet");
+        Log.d(LOG_TAG, new String(data, StandardCharsets.UTF_8));
         try
         {
             socket = new Socket(ip, TCP_PORT);
