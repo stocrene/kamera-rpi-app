@@ -187,7 +187,7 @@ class Repeat extends Thread
     ButtonsFragment buttonsFragment = new ButtonsFragment();
     private int x, y;
 
-    Camera camera = new Camera(buttonsFragment.ip);
+    //Camera camera = new Camera(buttonsFragment.ip);
 
     Repeat(int x, int y)
     {
@@ -200,7 +200,8 @@ class Repeat extends Thread
     {
         while(buttonsFragment.button_is_press)
         {
-            camera.sendDirection(x,y);
+            //camera.sendDirection(x,y);
+            new Camera(buttonsFragment.ip).sendDirection(x,y);
             try
             {
                 Thread.sleep(100);
