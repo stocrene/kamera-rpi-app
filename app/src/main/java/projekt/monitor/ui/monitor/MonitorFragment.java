@@ -79,6 +79,8 @@ public class MonitorFragment extends Fragment
 
     private TextView textView_tild;
     private TextView textView_pan;
+    private TextView textView_tild_value;
+    private TextView textView_pan_value;
     private TextView textView_camera_not_connected;
 
     private Class[] fragments = {
@@ -141,7 +143,7 @@ public class MonitorFragment extends Fragment
 
         monitorViewModel.ip = ip;
 
-        camera = new Camera(ip);
+        camera = new Camera(ip, monitorViewModel);
         //camera.addPositionObserver(this);
 
 
@@ -236,6 +238,8 @@ public class MonitorFragment extends Fragment
         imageView_info = (ImageView) rootView.findViewById(R.id.imageView_info);
         textView_tild = (TextView) rootView.findViewById(R.id.textView_tild);
         textView_pan = (TextView) rootView.findViewById(R.id.textView_pan);
+        textView_tild_value = (TextView) rootView.findViewById(R.id.textView_tild_value);
+        textView_pan_value = (TextView) rootView.findViewById(R.id.textView_pan_value);
         textView_camera_not_connected = (TextView) rootView.findViewById(R.id.textView_camera_not_connected);
 
         //DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.red));
@@ -269,7 +273,25 @@ public class MonitorFragment extends Fragment
     public void updatePosition(int x, int y)
     {
         Log.d(LOG_TAG, "Position: " + String.valueOf(x) + " " + String.valueOf(y));
+        String spaceX = "";
+        String spaceY = " ";
+        if(x < 10)
+        {
+            spaceX = "  ";
+        }
+        else if (x < 100)
+        {
+            spaceX = " ";
+        }
 
+        if(y < 10)
+        {
+            spaceY = "  ";
+        }
+
+        //String panVal = spaceX + String.valueOf(x);
+        textView_pan_value.setText(" 32");
+        //textView_tild_value.setText(spaceY + String.valueOf(y));
     }
 
     /*public void sshBefehl(final String ip, final int port, final String username, final String passwort)
@@ -431,6 +453,8 @@ public class MonitorFragment extends Fragment
                             loading_spinner.setVisibility(View.INVISIBLE);
                             textView_tild.setVisibility(View.VISIBLE);
                             textView_pan.setVisibility(View.VISIBLE);
+                            textView_tild_value.setVisibility(View.VISIBLE);
+                            textView_pan_value.setVisibility(View.VISIBLE);
                             imageButtonAddLocation.setVisibility(View.VISIBLE);
                         },
                         throwable -> {

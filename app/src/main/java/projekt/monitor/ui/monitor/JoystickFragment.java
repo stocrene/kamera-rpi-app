@@ -32,7 +32,7 @@ public class JoystickFragment extends Fragment
                              Bundle savedInstanceState)
     {
         MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
-        camera = new Camera(monitorViewModel.ip);
+        camera = new Camera(monitorViewModel.ip, monitorViewModel);
         camera.addPositionObserver((MonitorFragment)getParentFragment());
 
         // Inflate the layout for this fragment

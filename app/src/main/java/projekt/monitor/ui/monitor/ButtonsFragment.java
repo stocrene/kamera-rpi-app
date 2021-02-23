@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.niqdev.mjpeg.MjpegView;
 import java.net.Socket;
@@ -31,6 +32,7 @@ public class ButtonsFragment extends Fragment
     private ImageView imageViewArrowU;
     private ImageView imageViewArrowD;
     private MjpegView mjpegView;
+    private TextView textView_pan_value;
 
     private Socket socket;
     private int tcpPort = 10000;
@@ -65,9 +67,10 @@ public class ButtonsFragment extends Fragment
         rootView = inflater.inflate(R.layout.fragment_buttons, container, false);
         parentView = getParentFragment().getView();
 
-        camera = new Camera(ip);
+        camera = new Camera(ip, monitorViewModel);
         camera.addPositionObserver((MonitorFragment)getParentFragment());
 
+        textView_pan_value = (TextView) parentView.findViewById(R.id.textView_pan_value);
         imageButtonL = (ImageButton) rootView.findViewById(R.id.imageButtonL);
         imageButtonR = (ImageButton) rootView.findViewById(R.id.imageButtonR);
         imageButtonU = (ImageButton) rootView.findViewById(R.id.imageButtonU);
@@ -91,6 +94,7 @@ public class ButtonsFragment extends Fragment
                         Log.d(LOG_TAG, "Button Right Touch");
                         button_is_press = true;
                         new Repeat(x,0, camera).start();
+                        textView_pan_value.setText("asdf");
 
                     } else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
