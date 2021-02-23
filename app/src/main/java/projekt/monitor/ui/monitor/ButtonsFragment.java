@@ -211,7 +211,6 @@ class Repeat extends Thread
         while(buttonsFragment.button_is_press)
         {
             camera.sendDirection(x, y);
-            camera.requestPosition();
             try
             {
                 Thread.sleep(interval);

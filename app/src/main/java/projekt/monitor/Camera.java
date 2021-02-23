@@ -55,6 +55,7 @@ public class Camera
             {
                 byte[] data = object.toString().getBytes("utf-8");
                 new Send(data, ip).start();
+                requestPosition();
             }
             catch (UnsupportedEncodingException e)
             {
@@ -85,7 +86,7 @@ public class Camera
                 byte[] data = object.toString().getBytes("utf-8");
                 //Log.d(LOG_TAG, object.toString());
                 new Send(data, ip).start();
-                //requestPosition();
+                requestPosition();
             }
             catch (UnsupportedEncodingException e)
             {

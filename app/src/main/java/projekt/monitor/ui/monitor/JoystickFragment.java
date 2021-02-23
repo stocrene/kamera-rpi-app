@@ -49,7 +49,6 @@ public class JoystickFragment extends Fragment
                     x = (float)Math.cos(Math.toRadians(angle))*strength;
                     y = (float) Math.sin(Math.toRadians(angle))*strength;
                     camera.sendDirection((int)x, (int)y);
-                    camera.requestPosition();
                 }
             }
         }, interval);
