@@ -1,21 +1,21 @@
 package projekt.monitor;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.*;
 import android.util.Log;
 import java.net.Socket;
-
 import projekt.monitor.ui.monitor.MonitorFragment;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 
+//Diese Klasse dient zur Kommunikation zwischen Smartphone und Server (RaspberryPi)
+//Es werden Signalisierungsinformationen in Form einer JSON-Datei über eine TCP-Verbindung ausgetauscht
+//Insbesondere stehen folgende Signalisierungsinformationen zur Verfügung: Senden der gewünschten SOLL-Position
+//Anfrage der aktuellen IST-Position
 public class Camera
 {
     private String ip;
@@ -46,6 +46,7 @@ public class Camera
 
         try
         {
+            //Erstellt die JSON-Datei
             object.put("X", x);
             object.put("Y", y);
             object.put("pos", true);
@@ -75,6 +76,7 @@ public class Camera
 
         try
         {
+            //Erstelle die JSON-Datei
             object.put("X", x);
             object.put("Y", y);
             object.put("pos", false);
@@ -104,12 +106,14 @@ public class Camera
         new Request(ip, this).start();
     }
 
-
+    //Dient zur Signalisierung, dass eine IST-Position angezeigt wird
     public void addPositionObserver(MonitorFragment monitorFragment)
     {
         this.monitorFragment = monitorFragment;
     }
 
+    //Sende an das monitorFragment eine Nachricht, dass sich die Position geändert hat
+    //Dies dient zum effizienten Einsatz der Ressourcen
     public void updatePosition(int x, int y)
     {
         if (monitorFragment != null)
@@ -118,6 +122,7 @@ public class Camera
         }
     }
 
+    //Meldet die Anzeige der IST-Position ab
     private void removePositionObserver(MonitorFragment monitorFragment)
     {
         this.monitorFragment = null;
@@ -125,6 +130,8 @@ public class Camera
 
 }
 
+//Baut eine TCP Verbindung auf, sendet ein Request und Wartet auf Antwort
+//Die Antwort beinhaltet eine x- und y-Position
 class Request extends Thread
 {
     private String ip;
@@ -149,30 +156,33 @@ class Request extends Thread
         try
         {
             //Verbindungsaufbau
-            //Log.d(LOG_TAG, "Verbindungsaufbau");
             socket = new Socket(ip, TCP_PORT_REQUEST);
             socketRunning = true;
-            //Log.d(LOG_TAG, "Verbindung aufgebaut");
 
             try
             {
+                //JSON Datei (REQUEST) wird erstellt
                 object.put("REQUEST", "position");
                 try
                 {
+                    //Senden der JSON-Datei
                     byte[] data = object.toString().getBytes("utf-8");
                     Log.d(LOG_TAG, object.toString());
                     OutputStream output = socket.getOutputStream();
                     output.write(data);
 
+                    //Warten auf eine Antwort
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String strInput = null;
                     while ((strInput = in.readLine()) != null)
                     {
+                        //Server hat geantwortet
                         Log.d(LOG_TAG, strInput);
                         JSONObject object1 = new JSONObject(strInput);
 
                         if ((object1.get("ANSWER").toString()).equals("position"))
                         {
+                            //x und y Werte aus JSON Datei lesen
                             x = Integer.valueOf(object1.get("X").toString());
                             y = Integer.valueOf(object1.get("Y").toString());
                             camera.updatePosition(x,y);
@@ -201,6 +211,7 @@ class Request extends Thread
     }
 }
 
+//Senden von binären-Daten mithilfe von Socket
 class Send extends Thread
 {
     private String ip;
@@ -223,11 +234,13 @@ class Send extends Thread
         Log.d(LOG_TAG, new String(data, StandardCharsets.UTF_8));
         try
         {
+            //Socket wird gestartet
             socket = new Socket(ip, TCP_PORT);
             socketRunning = true;
 
             try
             {
+                //Dateien werden gesendet
                 Log.d(LOG_TAG, "Try send data");
                 OutputStream output = socket.getOutputStream();
                 output.write(data);
