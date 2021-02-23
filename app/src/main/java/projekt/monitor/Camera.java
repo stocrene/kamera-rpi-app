@@ -119,14 +119,10 @@ public class Camera
 
     public void updatePosition(int x, int y)
     {
-
         if (monitorFragment != null)
         {
             monitorFragment.updatePosition(x, y);
         }
-
-
-
     }
 
     private void removePositionObserver(MonitorFragment monitorFragment)
