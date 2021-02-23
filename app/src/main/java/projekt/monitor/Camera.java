@@ -184,8 +184,8 @@ class Request extends Thread
 
                         if ((object1.get("ANSWER").toString()).equals("position"))
                         {
-                            x = Integer.valueOf(object1.get("x").toString());
-                            y = Integer.valueOf(object1.get("y").toString());
+                            x = Integer.valueOf(object1.get("X").toString());
+                            y = Integer.valueOf(object1.get("Y").toString());
                             //camera.updatePosition(x,y);
 
                         }
