@@ -25,16 +25,13 @@ public class Camera
     public int x_pos;
     public int y_pos;
     private MonitorFragment monitorFragment = null;
-    private MonitorViewModel monitorViewModel;
 
 
-    public Camera(String ip, MonitorViewModel monitorViewModel)
+    public Camera(String ip)
     {
         this.ip = ip;
         x_pos = 0;
         y_pos = 0;
-        this.monitorViewModel = monitorViewModel;
-
     }
 
     public Camera()
@@ -105,7 +102,7 @@ public class Camera
     public void requestPosition()
     {
         Log.d(LOG_TAG, "requestPosition()");
-        new Request(ip, monitorViewModel).start();
+        new Request(ip, this).start();
     }
 
 
@@ -136,16 +133,14 @@ class Request extends Thread
     private Socket socket;
     private final int TCP_PORT_REQUEST = 10001;
     private Camera camera;
-    private MonitorViewModel monitorViewModel;
     private boolean socketRunning = false;
     private int x = 0;
     private int y = 0;
 
-    public Request(String ip, MonitorViewModel monitorViewModel)
+    public Request(String ip, Camera camera)
     {
         this.ip = ip;
         this.camera = camera;
-        this.monitorViewModel = monitorViewModel;
     }
 
     public void run()
@@ -181,8 +176,7 @@ class Request extends Thread
                         {
                             x = Integer.valueOf(object1.get("X").toString());
                             y = Integer.valueOf(object1.get("Y").toString());
-                            monitorViewModel.setX(x);
-                            //camera.updatePosition(x,y);
+                            camera.updatePosition(x,y);
                         }
                         else
                         {
