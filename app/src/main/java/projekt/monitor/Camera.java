@@ -119,10 +119,13 @@ public class Camera
 
     public void updatePosition(int x, int y)
     {
+
         if (monitorFragment != null)
         {
             monitorFragment.updatePosition(x, y);
         }
+
+
 
     }
 
@@ -157,14 +160,14 @@ class Request extends Thread
         try
         {
             //Verbindungsaufbau
-            Log.d(LOG_TAG, "Verbindungsaufbau");
+            //Log.d(LOG_TAG, "Verbindungsaufbau");
             socket = new Socket(ip, tcpPortRequest);
             socketRunning = true;
-            Log.d(LOG_TAG, "Verbindung aufgebaut");
+            //Log.d(LOG_TAG, "Verbindung aufgebaut");
 
             try
             {
-                object.put("REQUEST:", "position");
+                object.put("REQUEST", "position");
                 try
                 {
                     byte[] data = object.toString().getBytes("utf-8");
@@ -179,11 +182,11 @@ class Request extends Thread
                         Log.d(LOG_TAG, strInput);
                         JSONObject object1 = new JSONObject(strInput);
 
-                        if ((object1.get("Answer").toString()).equals("position"))
+                        if ((object1.get("ANSWER").toString()).equals("position"))
                         {
                             x = Integer.valueOf(object1.get("x").toString());
-                            //y = Integer.valueOf(object1.get("y").toString());
-                            camera.updatePosition(x,y);
+                            y = Integer.valueOf(object1.get("y").toString());
+                            //camera.updatePosition(x,y);
 
                         }
                         else
