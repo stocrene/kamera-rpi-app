@@ -34,9 +34,7 @@ import java.util.Properties;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.transition.TransitionInflater;
 import projekt.monitor.Camera;
@@ -50,7 +48,6 @@ public class MonitorFragment extends Fragment
     private static String port = "";
     private static String username = "";
     private static String passwort = "";
-    private int motionPort = 8081;
 
     private Camera camera;
 
@@ -60,9 +57,6 @@ public class MonitorFragment extends Fragment
     private MjpegView mjpegView;
     private View rootView;
 
-    private Socket socket;
-    private int tcpPort = 10000;
-    private boolean socketRunning = false;
     private int posX = 0;
     private int posY = 0;
 
@@ -116,7 +110,9 @@ public class MonitorFragment extends Fragment
     private Thread thread;
 
     private final String LOG_TAG = MonitorFragment.class.getSimpleName();
-    private final Integer TEXT_SIZE = 17;
+    private final int TEXT_SIZE = 17;
+    private final int MOTION_PORT = 8081;
+    private final int TIMEOUT = 5;
 
 
     @Override
@@ -128,6 +124,7 @@ public class MonitorFragment extends Fragment
         //new SocketThread().start();
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_monitor, container, false);
@@ -266,109 +263,6 @@ public class MonitorFragment extends Fragment
             }
         });
 
-
-/*
-        imageButtonR.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (mjpegView.getSurfaceView().isShown())
-                {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN)
-                    {
-                        imageViewArrowR.setVisibility(View.VISIBLE);
-                        Log.d(LOG_TAG, "Button Right Touch");
-                        if(true)
-                        {
-                            new SetPositionThread(posX, posY).start();
-                            posX = -1*(posX-180);
-                            posY = -1*(posY-180);
-                        }
-                    } else if (event.getAction() == MotionEvent.ACTION_UP)
-                    {
-                        imageViewArrowR.setVisibility(View.INVISIBLE);
-                        Log.d(LOG_TAG, "Button Right Release");
-                    }
-                }
-                return false;
-            }
-        });
-
-        imageButtonL.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View w)
-            {
-                Log.d(LOG_TAG, "Button Links");
-                Log.d(LOG_TAG, "rotatCamera(links)");
-                rotateCamera("links");
-            }
-        });
-
-        imageButtonL.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (mjpegView.getSurfaceView().isShown())
-                {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN)
-                    {
-                        imageViewArrowL.setVisibility(View.VISIBLE);
-                        Log.d(LOG_TAG, "Button Left Touch");
-                    } else if (event.getAction() == MotionEvent.ACTION_UP)
-                    {
-                        imageViewArrowL.setVisibility(View.INVISIBLE);
-                        Log.d(LOG_TAG, "Button Left Release");
-                    }
-                }
-                return false;
-            }
-        });
-
-        imageButtonU.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (mjpegView.getSurfaceView().isShown())
-                {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN)
-                    {
-                        imageViewArrowU.setVisibility(View.VISIBLE);
-                        Log.d(LOG_TAG, "Button Up Touch");
-                    } else if (event.getAction() == MotionEvent.ACTION_UP)
-                    {
-                        imageViewArrowU.setVisibility(View.INVISIBLE);
-                        Log.d(LOG_TAG, "Button Up Release");
-                    }
-                }
-                return false;
-            }
-        });
-
-        imageButtonD.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (mjpegView.getSurfaceView().isShown())
-                {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN)
-                    {
-                        imageViewArrowD.setVisibility(View.VISIBLE);
-                        Log.d(LOG_TAG, "Button Down Touch");
-                    } else if (event.getAction() == MotionEvent.ACTION_UP)
-                    {
-                        imageViewArrowD.setVisibility(View.INVISIBLE);
-                        Log.d(LOG_TAG, "Button Down Release");
-                    }
-                }
-                return false;
-            }
-        });
-*/
         return rootView;
     }
 
@@ -401,7 +295,7 @@ public class MonitorFragment extends Fragment
             protected void onPostExecute(boolean ausgefuehrt){}
 
         }.execute("");
-    }*/
+    }
 
 
     public void rotateCamera(String direction)
@@ -490,13 +384,13 @@ public class MonitorFragment extends Fragment
         channelssh.disconnect();
         session.disconnect();
 
-                        /*while(!lines.isEmpty())
+                        *//*while(!lines.isEmpty())
                         {
                             Log.d(LOG_TAG, lines.get(0));
                             lines.remove(0);
-                        }*/
+                        }*//*
         return true;
-    }
+    }*/
 
 
     void makeAlertDialog()
@@ -526,9 +420,8 @@ public class MonitorFragment extends Fragment
     public void onStart()
     {
         super.onStart();
-        int TIMEOUT = 5;
         Mjpeg.newInstance()
-                .open("http://" + ip + ":" + motionPort + "/", TIMEOUT)
+                .open("http://" + ip + ":" + MOTION_PORT + "/", TIMEOUT)
                 .subscribe(inputStream -> {
                             mjpegView.setSource(inputStream);
                             mjpegView.setDisplayMode(DisplayMode.BEST_FIT);
@@ -551,13 +444,6 @@ public class MonitorFragment extends Fragment
                             imageView_line_right.setVisibility(View.VISIBLE);
                             textView_camera_not_connected.setVisibility(View.VISIBLE);
                             imageView_info.setVisibility(View.VISIBLE);
-
-                            /*
-                            if(rootView.isShown())
-                            {
-                                makeAlertDialog();
-                            }
-                            */
                         });
     }
 
@@ -567,25 +453,6 @@ public class MonitorFragment extends Fragment
         super.onStop();
         mjpegView.stopPlayback();
     }
-
-
-    class SocketThread extends Thread
-    {
-        public void run()
-        {
-            try
-            {
-                socket = new Socket("192.168.178.34", tcpPort);
-                socketRunning = true;
-                Log.d(LOG_TAG, "socket");
-            }
-            catch (Exception e)
-            {
-                Log.e(LOG_TAG, "Socket error", e);
-            }
-        }
-    }
-
 }
 
 
