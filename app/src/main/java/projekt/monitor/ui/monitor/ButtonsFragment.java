@@ -1,7 +1,6 @@
 package projekt.monitor.ui.monitor;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -45,7 +44,6 @@ public class ButtonsFragment extends Fragment
     public static boolean button_is_press = false;
     public static String ip;
 
-
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
 
     private View rootView;
@@ -81,6 +79,8 @@ public class ButtonsFragment extends Fragment
         imageViewArrowD = (ImageView)parentView.findViewById(R.id.imageViewArrowD);
         mjpegView = (MjpegView)parentView.findViewById(R.id.mjpegView);
 
+
+        //Taste RECHTS
         imageButtonR.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -108,7 +108,7 @@ public class ButtonsFragment extends Fragment
         });
 
 
-
+        //Taste LINKS
         imageButtonL.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -134,6 +134,7 @@ public class ButtonsFragment extends Fragment
             }
         });
 
+        //Taste UP (HOCH)
         imageButtonU.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -158,6 +159,7 @@ public class ButtonsFragment extends Fragment
             }
         });
 
+        //Taste DOWN
         imageButtonD.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -189,6 +191,9 @@ public class ButtonsFragment extends Fragment
 }
 
 
+//Sendet in regelmäßigen Abständen die Information, dass die Taste gedrückt gehalten wird
+//Dies dient dazu, falls die Verbindung unterbrochen wird, dass dies auf Server-Seite erkannt wird
+//und der Servomotor stoppt
 class Repeat extends Thread
 {
     private final String LOG_TAG = ButtonsFragment.class.getSimpleName();
