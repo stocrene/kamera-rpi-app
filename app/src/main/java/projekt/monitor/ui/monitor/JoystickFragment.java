@@ -17,6 +17,7 @@ public class JoystickFragment extends Fragment
 {
     private float x;
     private float y;
+    private Camera camera;
     private View rootView;
     private int interval = 100;
 
@@ -31,7 +32,9 @@ public class JoystickFragment extends Fragment
                              Bundle savedInstanceState)
     {
         MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
-        Camera camera = new Camera(monitorViewModel.ip);
+        camera = new Camera(monitorViewModel.ip);
+        camera.addPositionObserver((MonitorFragment)getParentFragment());
+
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_joystick, container, false);
 
@@ -46,6 +49,7 @@ public class JoystickFragment extends Fragment
                     x = (float)Math.cos(Math.toRadians(angle))*strength;
                     y = (float) Math.sin(Math.toRadians(angle))*strength;
                     camera.sendDirection((int)x, (int)y);
+                    camera.requestPosition();
                 }
             }
         }, interval);

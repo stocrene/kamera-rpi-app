@@ -142,7 +142,7 @@ public class MonitorFragment extends Fragment
         monitorViewModel.ip = ip;
 
         camera = new Camera(ip);
-        camera.addPositionObserver(this);
+        //camera.addPositionObserver(this);
 
 
         if(savedInstanceState == null)
