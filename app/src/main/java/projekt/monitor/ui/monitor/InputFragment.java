@@ -51,6 +51,15 @@ public class InputFragment extends Fragment
          outlinedTextField_pan = (TextInputLayout)rootView.findViewById(R.id.outlinedTextField_pan);
          outlinedTextField_tild = (TextInputLayout)rootView.findViewById(R.id.outlinedTextField_tild);
 
+         if(monitorViewModel.posX != -1)
+         {
+             slider_pan.setValue(monitorViewModel.posX);
+         }
+         if(monitorViewModel.posY != -1)
+         {
+             slider_tild.setValue(monitorViewModel.posY);
+         }
+
 //         outlinedTextField_pan.addOnEditTextAttachedListener
 //        {
 //
@@ -65,7 +74,7 @@ public class InputFragment extends Fragment
              public void onStopTrackingTouch(Slider slider)
              {
                  // Send message
-                 camera.requestPosition();
+                 camera.setTargetPosition((int)slider.getValue(), (int)slider_tild.getValue());
 
              }
          });
@@ -87,7 +96,7 @@ public class InputFragment extends Fragment
             public void onStopTrackingTouch(Slider slider)
             {
                 // Send message
-                camera.setTargetPosition(0, 0);
+                camera.setTargetPosition((int)slider_pan.getValue(), (int)slider.getValue());
 
             }
         });

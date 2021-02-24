@@ -59,9 +59,6 @@ public class MonitorFragment extends Fragment
     private MjpegView mjpegView;
     private View rootView;
 
-    private int posX = -1;
-    private int posY = -1;
-
     private MainViewModel mainViewModel;
     private MonitorViewModel monitorViewModel;
 
@@ -267,7 +264,7 @@ public class MonitorFragment extends Fragment
             @Override
             public void onClick(View w)
             {
-                DialogPositionFragment dialogPositionFragment = new DialogPositionFragment(posX, posY);
+                DialogPositionFragment dialogPositionFragment = new DialogPositionFragment(monitorViewModel.posX, monitorViewModel.posY);
                 dialogPositionFragment.show(getActivity().getSupportFragmentManager(), "addPosition");
             }
         });
@@ -276,22 +273,13 @@ public class MonitorFragment extends Fragment
     }
 
 
-    public int getX()
-    {
-        return posX;
-    }
-
-    public int getY()
-    {
-        return posY;
-    }
 
     public void updatePosition(int x, int y)
     {
         Log.d(LOG_TAG, "Position: " + String.valueOf(x) + " " + String.valueOf(y));
 
-        posX = x;
-        posY = y;
+        monitorViewModel.posX = x;
+        monitorViewModel.posY = y;
 
         String spaceX = "";
         String spaceY = " ";

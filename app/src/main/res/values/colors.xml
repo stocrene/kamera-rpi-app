@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#538788</color>
     <color name="colorAccent">#4D8081</color>
 
-    <color name="colorBackground">#F6F6F6</color>
+    <color name="colorBackground">#F4F4F4</color>
 
     <color name="colorCenter">#19284E</color>
 
@@ -20,6 +20,8 @@
     <color name="tablayout_color_inactive">#74000000</color>
     <!-- arrows -->
     <color name="red">#CD382D</color>
+
+    <color name="ic_left_list">#CFCFCF</color>
 
     <color name="joystick">#676767</color>
 </resources>

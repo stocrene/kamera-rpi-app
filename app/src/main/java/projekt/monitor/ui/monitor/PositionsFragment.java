@@ -30,6 +30,8 @@ import org.json.JSONObject;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.lifecycle.ViewModelProvider;
+import projekt.monitor.Camera;
 import projekt.monitor.R;
 import projekt.monitor.Positions;
 
@@ -38,6 +40,7 @@ public class PositionsFragment extends Fragment
 {
     private View rootView;
     private View parentView;
+    private Camera camera;
     private ImageButton button_add_position;
     private boolean button_add_position_visible = false;
     private Positions positions = new Positions();
@@ -61,6 +64,11 @@ public class PositionsFragment extends Fragment
     {
         rootView = inflater.inflate(R.layout.fragment_positions, container, false);
         parentView = getParentFragment().getView();
+
+        MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
+        camera = new Camera(monitorViewModel.ip);
+        camera.addPositionObserver((MonitorFragment)getParentFragment());
+
         button_add_position = (ImageButton)parentView.findViewById(R.id.imageButton_add_position);
         if(button_add_position.getVisibility() == View.VISIBLE)
         {
@@ -74,7 +82,7 @@ public class PositionsFragment extends Fragment
         if(positionsList != null)
         {
             //sort list alphabetically
-            Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
+            //Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
 
             /*listAdapter = new ArrayAdapter<>(
                     getContext(),
@@ -91,7 +99,23 @@ public class PositionsFragment extends Fragment
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id)
                 {
-                    String position = (String)adapterView.getItemAtPosition(pos);
+                    String posJSON = (String)adapterView.getItemAtPosition(pos);
+
+                    try
+                    {
+                        JSONObject object = new JSONObject(posJSON);
+                        int x;
+                        int y;
+
+                        x = Integer.parseInt(object.get("x").toString());
+                        y = Integer.parseInt(object.get("y").toString());
+
+                        camera.setTargetPosition(x, y);
+                    }
+                    catch(JSONException e)
+                    {
+                        Log.e(LOG_TAG, "JSONObject error", e);
+                    }
                 }
             });
 
@@ -142,11 +166,11 @@ public class PositionsFragment extends Fragment
 
                     try
                     {
-                        JSONObject object1 = new JSONObject(pos);
+                        JSONObject object = new JSONObject(pos);
 
-                        pos = object1.get("position").toString();
-                        int x = Integer.valueOf(object1.get("x").toString());
-                        int y = Integer.valueOf(object1.get("y").toString());
+                        pos = object.get("position").toString();
+                        int x = Integer.valueOf(object.get("x").toString());
+                        int y = Integer.valueOf(object.get("y").toString());
 
                         Log.d(LOG_TAG, "index: " + String.valueOf(index));
                         switch (index)
@@ -166,7 +190,7 @@ public class PositionsFragment extends Fragment
                                 positionsList.clear();
                                 positionsList = positions.getPositions(getContext());
                                 //positionsList.remove(position);
-                                listView.setAdapter(listAdapter);
+                                //listView.setAdapter(listAdapter);
 //                            listAdapter.notifyDataSetChanged();
 //                            listView.setAdapter(listAdapter);
 //                            AlertDialog dialog = dialogDeleteFragment.getDialog();

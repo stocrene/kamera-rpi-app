@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import projekt.monitor.ui.monitor.MonitorFragment;
@@ -61,6 +62,8 @@ public class Positions
     {
         SharedPreferences prefs = mContext.getSharedPreferences(KEY, 0);
         SharedPreferences.Editor editor = prefs.edit();
+        //sort list alphabetically
+        Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
         editor.putInt(LIST_NAME +"_size", positionsList.size());
         for(int i = 0; i < positionsList.size(); i++)
         {
