@@ -78,6 +78,7 @@ public class MonitorFragment extends Fragment
     private ImageView imageViewArrowD;
     private ImageView imageView_info;
     private ImageButton imageButtonAddLocation;
+    private View divider;
 
     private TextView textView_tild;
     private TextView textView_pan;
@@ -242,6 +243,7 @@ public class MonitorFragment extends Fragment
         textView_tild_value = (TextView) rootView.findViewById(R.id.textView_tild_value);
         textView_pan_value = (TextView) rootView.findViewById(R.id.textView_pan_value);
         textView_camera_not_connected = (TextView) rootView.findViewById(R.id.textView_camera_not_connected);
+        divider = (View) rootView.findViewById(R.id.divider);
 
         camera.requestPosition();
 
@@ -482,6 +484,7 @@ public class MonitorFragment extends Fragment
                             textView_tild_value.setVisibility(View.VISIBLE);
                             textView_pan_value.setVisibility(View.VISIBLE);
                             imageButtonAddLocation.setVisibility(View.VISIBLE);
+                            divider.setVisibility(View.VISIBLE);
                         },
                         throwable -> {
                             Log.e(LOG_TAG, "mjpeg error", throwable);

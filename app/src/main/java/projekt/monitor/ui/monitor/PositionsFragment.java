@@ -1,10 +1,6 @@
 package projekt.monitor.ui.monitor;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ClipData;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,7 +8,6 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,22 +18,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import projekt.monitor.Camera;
 import projekt.monitor.R;
 import projekt.monitor.Positions;
 
@@ -296,7 +287,6 @@ class PositionListAdapter extends ArrayAdapter<String>
         String pos = "";
         String pan = "";
         String tild = "";
-
         try
         {
             JSONObject object = new JSONObject(posJSON);
@@ -311,9 +301,8 @@ class PositionListAdapter extends ArrayAdapter<String>
         }
 
         TextView textView_list_item = (TextView) v.findViewById(R.id.textView_list_item);
-        TextView textView_list_item_pan = (TextView) v.findViewById(R.id.textView_list_item_pan);
-        TextView textView_list_item_tild = (TextView) v.findViewById(R.id.textView_list_item_tild);
-
+        TextView textView_list_item_pan = (TextView) v.findViewById(R.id.textView_list_item_pan_value);
+        TextView textView_list_item_tild = (TextView) v.findViewById(R.id.textView_list_item_tild_value);
         if (textView_list_item != null)
         {
             textView_list_item.setText(pos);

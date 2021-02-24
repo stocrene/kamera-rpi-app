@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,6 +48,11 @@ public class DialogRenameFragment extends DialogFragment
             {
                 textInputLayout = (TextInputLayout) getDialog().findViewById(R.id.outlinedTextField_rename_position);
                 textInputLayout.getEditText().setText(position);
+
+                TextView textView_pan_value = (TextView) getDialog().findViewById(R.id.textView_pan_value);
+                TextView textView_tild_value = (TextView) getDialog().findViewById(R.id.textView_tild_value);
+                textView_pan_value.setText(String.valueOf(x));
+                textView_tild_value.setText(String.valueOf(y));
             }
         });
         dialog.show();

@@ -157,17 +157,26 @@
         app:layout_constraintStart_toStartOf="@+id/mjpegView"
         app:layout_constraintTop_toTopOf="@+id/mjpegView" />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="55dp"
+        android:visibility="invisible"
+        android:background="@color/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mjpegView" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="55dp"
         app:layout_constraintBottom_toTopOf="@+id/tabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mjpegView"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -250,21 +259,20 @@
 
     <ImageButton
         android:id="@+id/imageButton_add_position"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:background="@color/colorBackground"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_add_position"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/fragment_container_view"
-        app:layout_constraintDimensionRatio="w,"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_container_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView_tild"
-        app:layout_constraintTop_toBottomOf="@+id/mjpegView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/mjpegView" />
 
     <TextView
         android:id="@+id/textView_camera_not_connected"

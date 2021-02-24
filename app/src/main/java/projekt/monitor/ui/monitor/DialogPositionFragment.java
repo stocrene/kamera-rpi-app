@@ -2,10 +2,12 @@ package projekt.monitor.ui.monitor;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -38,6 +40,17 @@ public class DialogPositionFragment extends DialogFragment
                 .setPositiveButton(R.string.save, null)
                 .setNegativeButton(R.string.cancel, null);
         AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener()
+        {
+            @Override
+            public void onShow(DialogInterface dialog)
+            {
+                TextView textView_pan_value = (TextView) getDialog().findViewById(R.id.textView_pan_value);
+                TextView textView_tild_value = (TextView) getDialog().findViewById(R.id.textView_tild_value);
+                textView_pan_value.setText(String.valueOf(x));
+                textView_tild_value.setText(String.valueOf(y));
+            }
+        });
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
         {

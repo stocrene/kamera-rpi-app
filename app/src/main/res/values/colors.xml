@@ -12,6 +12,7 @@
 
     <!-- fragment_monitor -->
     <color name="grey">#AB000000</color>
+    <color name="divider">#DADADA</color>
     <color name="icon_no_connection">#2A000000</color>
     <!-- TabLayout -->
     <color name="line">#A6A6A6</color>
