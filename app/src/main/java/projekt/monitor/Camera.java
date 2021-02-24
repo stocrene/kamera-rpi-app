@@ -137,6 +137,7 @@ class Request extends Thread
     private boolean socketRunning = false;
     private int x = 0;
     private int y = 0;
+    private final int delay = 200;
 
     public Request(String ip, Camera camera)
     {
@@ -147,6 +148,15 @@ class Request extends Thread
     public void run()
     {
         final JSONObject object = new JSONObject();
+
+        try
+        {
+            Thread.sleep(delay);
+        }
+        catch (Exception e)
+        {
+            Log.e(LOG_TAG, "Thread delay error");
+        }
 
         try
         {

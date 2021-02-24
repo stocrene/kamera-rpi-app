@@ -217,7 +217,7 @@ class Repeat extends Thread
             }
             catch (Exception e)
             {
-                Log.e(LOG_TAG, "Thread error");
+                Log.e(LOG_TAG, "Thread interval error");
             }
         }
     }

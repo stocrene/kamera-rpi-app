@@ -2,6 +2,8 @@ package projekt.monitor.ui.monitor;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,6 +22,7 @@ import android.view.animation.BounceInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -31,9 +34,11 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import projekt.monitor.Camera;
 import projekt.monitor.R;
 import projekt.monitor.Positions;
 
@@ -80,11 +85,13 @@ public class PositionsFragment extends Fragment
             //sort list alphabetically
             Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
 
-            listAdapter = new ArrayAdapter<>(
+            /*listAdapter = new ArrayAdapter<>(
                     getContext(),
                     R.layout.list_item_position,
                     R.id.list_item_position_textview,
-                    positionsList);
+                    positionsList);*/
+
+            listAdapter = new PositionListAdapter(getContext(), R.layout.list_item_position, positionsList);
 
             listView = (SwipeMenuListView) rootView.findViewById(R.id.listView_positions);
             listView.setAdapter(listAdapter);
@@ -94,7 +101,6 @@ public class PositionsFragment extends Fragment
                 public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id)
                 {
                     String position = (String)adapterView.getItemAtPosition(pos);
-
                 }
             });
 
@@ -214,8 +220,6 @@ public class PositionsFragment extends Fragment
                     {
                         Log.e(LOG_TAG, "Failed to create JSONObject", e);
                     }
-
-
                     return false;
                 }
             });
@@ -257,5 +261,74 @@ public class PositionsFragment extends Fragment
         {
             button_add_position.setVisibility(View.VISIBLE);
         }
+    }
+}
+
+
+
+
+class PositionListAdapter extends ArrayAdapter<String>
+{
+    private final String LOG_TAG = PositionListAdapter.class.getSimpleName();
+    private int resourceLayout;
+    private Context mContext;
+
+    public PositionListAdapter(Context context, int resource, List<String> list)
+    {
+        super(context, resource, list);
+        this.resourceLayout = resource;
+        this.mContext = context;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+        View v = convertView;
+
+        if (v == null)
+        {
+            LayoutInflater vi;
+            vi = LayoutInflater.from(mContext);
+            v = vi.inflate(resourceLayout, null);
+        }
+
+        String posJSON = getItem(position);
+        String pos = "";
+        String pan = "";
+        String tild = "";
+
+        try
+        {
+            JSONObject object = new JSONObject(posJSON);
+
+            pos = object.get("position").toString();
+            pan = object.get("x").toString();
+            tild = object.get("y").toString();
+        }
+        catch(JSONException e)
+        {
+            Log.e(LOG_TAG, "JSONObject error", e);
+        }
+
+        TextView textView_list_item = (TextView) v.findViewById(R.id.textView_list_item);
+        TextView textView_list_item_pan = (TextView) v.findViewById(R.id.textView_list_item_pan);
+        TextView textView_list_item_tild = (TextView) v.findViewById(R.id.textView_list_item_tild);
+
+        if (textView_list_item != null)
+        {
+            textView_list_item.setText(pos);
+        }
+
+        if (textView_list_item_pan != null)
+        {
+            textView_list_item_pan.setText(pan);
+        }
+
+        if (textView_list_item_tild != null)
+        {
+            textView_list_item_tild.setText(tild);
+        }
+
+        return v;
     }
 }
