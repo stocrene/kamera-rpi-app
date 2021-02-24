@@ -72,7 +72,7 @@ public class JoystickFragment extends Fragment
 
                     if (mjpegView.getSurfaceView().isShown())
                     {
-                        if(x > 20)
+                        if(x > 0)
                         {
                             imageViewArrowR.setVisibility(View.VISIBLE);
                         }
@@ -81,7 +81,7 @@ public class JoystickFragment extends Fragment
                             imageViewArrowR.setVisibility(View.INVISIBLE);
                         }
 
-                        if (x < -20)
+                        if (x < 0)
                         {
                             imageViewArrowL.setVisibility(View.VISIBLE);
                         }
@@ -90,7 +90,7 @@ public class JoystickFragment extends Fragment
                             imageViewArrowL.setVisibility(View.INVISIBLE);
                         }
 
-                        if(y > 20)
+                        if(y > 0)
                         {
                             imageViewArrowU.setVisibility(View.VISIBLE);
                         }
@@ -99,7 +99,7 @@ public class JoystickFragment extends Fragment
                             imageViewArrowU.setVisibility(View.INVISIBLE);
                         }
 
-                        if (y < -20)
+                        if (y < 0)
                         {
                             imageViewArrowD.setVisibility(View.VISIBLE);
                         }
