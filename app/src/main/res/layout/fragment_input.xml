@@ -11,17 +11,17 @@
         android:id="@+id/slider_pan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
         android:stepSize="1.0"
-        android:value="20.0"
-        android:valueFrom="0.0"
-        android:valueTo="180.0"
+        android:valueFrom="0"
+        android:valueTo="180"
+        app:labelBehavior="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outlinedTextField_pan"
+        app:layout_constraintTop_toBottomOf="@+id/textView_input_pan_value"
         app:layout_constraintVertical_bias="0.0"
         app:tickColorActive="?attr/colorPrimary"
         app:tickColorInactive="?attr/colorOnPrimary"
@@ -31,64 +31,64 @@
         android:id="@+id/slider_tild"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
         android:stepSize="1.0"
-        android:value="20.0"
         android:valueFrom="0"
         android:valueTo="90"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:labelBehavior="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slider_pan"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/textView_input_tild"
         app:tickColorActive="?attr/colorPrimary"
         app:tickColorInactive="?attr/colorOnPrimary"
         app:trackHeight="3dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedTextField_pan"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textView_input_pan"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/pan"
-        app:helperText="@string/pan"
-        app:helperTextEnabled="true"
-        app:layout_constraintEnd_toStartOf="@+id/outlinedTextField_tild"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="48dp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedTextField_tild"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/tild"
-        app:helperText="@string/tild"
-        app:helperTextEnabled="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/pan"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/outlinedTextField_pan"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="48dp" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/textView_input_pan_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_input_pan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView_input_pan" />
+
+    <TextView
+        android:id="@+id/textView_input_tild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/tild"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slider_pan" />
+
+    <TextView
+        android:id="@+id/textView_input_tild_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_input_tild"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView_input_tild" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

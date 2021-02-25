@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputLayout;
@@ -25,8 +26,8 @@ public class InputFragment extends Fragment
 
     private Slider slider_pan;
     private Slider slider_tild;
-    private TextInputLayout outlinedTextField_pan;
-    private TextInputLayout outlinedTextField_tild;
+    private TextView textView_input_pan_value;
+    private TextView textView_input_tild_value;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -46,46 +47,46 @@ public class InputFragment extends Fragment
         camera = new Camera(monitorViewModel.ip);
         camera.addPositionObserver((MonitorFragment)getParentFragment());
 
-         slider_pan = (Slider)rootView.findViewById(R.id.slider_pan);
-         slider_tild = (Slider)rootView.findViewById(R.id.slider_tild);
-         outlinedTextField_pan = (TextInputLayout)rootView.findViewById(R.id.outlinedTextField_pan);
-         outlinedTextField_tild = (TextInputLayout)rootView.findViewById(R.id.outlinedTextField_tild);
+        slider_pan = (Slider)rootView.findViewById(R.id.slider_pan);
+        slider_tild = (Slider)rootView.findViewById(R.id.slider_tild);
+        textView_input_pan_value = (TextView)rootView.findViewById(R.id.textView_input_pan_value);
+        textView_input_tild_value = (TextView)rootView.findViewById(R.id.textView_input_tild_value);
 
-         if(monitorViewModel.posX != -1)
-         {
-             slider_pan.setValue(monitorViewModel.posX);
-         }
-         if(monitorViewModel.posY != -1)
-         {
-             slider_tild.setValue(monitorViewModel.posY);
-         }
 
-//         outlinedTextField_pan.addOnEditTextAttachedListener
-//        {
-//
-//        }
+        if(monitorViewModel.posX != -1)
+        {
+            slider_pan.setValue(monitorViewModel.posX);
+            textView_input_pan_value.setText(String.valueOf(monitorViewModel.posX));
+        }
+        if(monitorViewModel.posY != -1)
+        {
+            slider_tild.setValue(monitorViewModel.posY);
+            textView_input_tild_value.setText(String.valueOf(monitorViewModel.posY));
+        }
 
-         slider_pan.addOnSliderTouchListener(new Slider.OnSliderTouchListener()
-         {
-             @Override
-             public void onStartTrackingTouch(Slider slider) {}
 
-             @Override
-             public void onStopTrackingTouch(Slider slider)
-             {
-                 // Send message
-                 camera.setTargetPosition((int)slider.getValue(), (int)slider_tild.getValue());
+        slider_pan.addOnSliderTouchListener(new Slider.OnSliderTouchListener()
+        {
+            @Override
+            public void onStartTrackingTouch(Slider slider) {}
 
-             }
-         });
-         slider_pan.addOnChangeListener(new Slider.OnChangeListener()
-         {
-             @Override
-             public void onValueChange(Slider slider, float value, boolean fromUser)
-             {
-                 outlinedTextField_pan.getEditText().setText(String.valueOf((int)value));
-             }
-         });
+            @Override
+            public void onStopTrackingTouch(Slider slider)
+            {
+                // Send message
+                camera.setTargetPosition((int)slider.getValue(), (int)slider_tild.getValue());
+
+            }
+        });
+        slider_pan.addOnChangeListener(new Slider.OnChangeListener()
+        {
+            @Override
+            public void onValueChange(Slider slider, float value, boolean fromUser)
+            {
+                textView_input_pan_value.setText(String.valueOf((int)value));
+            }
+        });
+
 
         slider_tild.addOnSliderTouchListener(new Slider.OnSliderTouchListener()
         {
@@ -100,19 +101,14 @@ public class InputFragment extends Fragment
 
             }
         });
-
         slider_tild.addOnChangeListener(new Slider.OnChangeListener()
         {
             @Override
             public void onValueChange(Slider slider, float value, boolean fromUser)
             {
-                outlinedTextField_tild.getEditText().setText(String.valueOf((int)value));
+                textView_input_tild_value.setText(String.valueOf((int)value));
             }
         });
-
-
-
-
 
         return rootView;
     }

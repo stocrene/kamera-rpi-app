@@ -1,6 +1,9 @@
 package projekt.monitor.ui.monitor;
 
+import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -31,11 +34,8 @@ public class ButtonsFragment extends Fragment
     private ImageView imageViewArrowD;
     private MjpegView mjpegView;
 
-    private Socket socket;
-    private int tcpPort = 10000;
-    private boolean socketRunning = false;
-    private int x = 70;
-    private int y = 70;
+    private final int x = 70;
+    private final int y = 70;
 
     private Camera camera;
 
@@ -87,6 +87,14 @@ public class ButtonsFragment extends Fragment
                 {
                     if(event.getAction() == MotionEvent.ACTION_DOWN)
                     {
+//                        if(monitorViewModel.posX > xMax -2)
+//                        {
+//                            DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.red));
+//                        }
+//                        else
+//                        {
+//                            DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), Color.WHITE);
+//                        }
                         imageViewArrowR.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Right Touch");
                         button_is_press = true;

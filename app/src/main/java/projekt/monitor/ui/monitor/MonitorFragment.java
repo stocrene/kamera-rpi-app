@@ -53,6 +53,11 @@ public class MonitorFragment extends Fragment
 
     private Camera camera;
 
+    private final int xMin = 1;
+    private final int xMax = 168;
+    private final int yMin = 12;
+    private final int yMax = 88;
+
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
@@ -145,6 +150,7 @@ public class MonitorFragment extends Fragment
 
         camera = new Camera(ip);
         camera.addPositionObserver(this);
+        camera.requestPosition();
 
         if(savedInstanceState == null)
         {
@@ -212,15 +218,6 @@ public class MonitorFragment extends Fragment
 
 
 
-        //mjpegView.setCustomBackgroundColor(Color.WHITE);
-        /*monitorViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>()
-        {
-            @Override
-            public void onChanged(@Nullable String s)
-            {
-                textView.setText(s);
-            }
-        });*/
         loading_spinner = (ProgressBar) rootView.findViewById(R.id.loading_spinner);
         mjpegView = (MjpegView) rootView.findViewById(R.id.mjpegView);
         imageButtonNoConnection = (ImageButton) rootView.findViewById(R.id.imageButtonNoConnection);
@@ -242,9 +239,7 @@ public class MonitorFragment extends Fragment
         textView_camera_not_connected = (TextView) rootView.findViewById(R.id.textView_camera_not_connected);
         divider = (View) rootView.findViewById(R.id.divider);
 
-        camera.requestPosition();
 
-        //DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.red));
         DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), Color.WHITE);
         DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowL.getDrawable()).mutate(), Color.WHITE);
         DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowU.getDrawable()).mutate(), Color.WHITE);
@@ -306,6 +301,41 @@ public class MonitorFragment extends Fragment
             {
                 textView_pan_value.setText(panVal);
                 textView_tild_value.setText(tildVal);
+                if(x >= xMax)
+                {
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.red));
+                }
+                else
+                {
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), Color.WHITE);
+                }
+
+                if(x <= xMin)
+                {
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowL.getDrawable()).mutate(), getResources().getColor(R.color.red));
+                }
+                else
+                {
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowL.getDrawable()).mutate(), Color.WHITE);
+                }
+
+                if(y >= yMax)
+                {
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowU.getDrawable()).mutate(), getResources().getColor(R.color.red));
+                }
+                else
+                {
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowU.getDrawable()).mutate(), Color.WHITE);
+                }
+
+                if(y <= yMin)
+                {
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowD.getDrawable()).mutate(), getResources().getColor(R.color.red));
+                }
+                else
+                {
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowD.getDrawable()).mutate(), Color.WHITE);
+                }
             }
         });
     }
