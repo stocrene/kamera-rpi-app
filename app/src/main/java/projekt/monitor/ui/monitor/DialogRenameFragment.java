@@ -7,10 +7,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Collections;
+import java.util.List;
 
 import androidx.fragment.app.DialogFragment;
 import projekt.monitor.Positions;
@@ -18,16 +26,24 @@ import projekt.monitor.R;
 
 public class DialogRenameFragment extends DialogFragment
 {
+    List positionsList;
+    ListView listView;
+    ArrayAdapter listAdapter;
+    private int posIndex;
     private String position;
     private int x, y;
     private TextInputLayout textInputLayout;
     private final String LOG_TAG = DialogRenameFragment.class.getSimpleName();
 
-    public DialogRenameFragment(String position, int x, int y)
+    public DialogRenameFragment(String position, int x, int y, List positionsList, ListView listView, ArrayAdapter listAdapter, int posIndex)
     {
         this.position = position;
         this.x = x;
         this.y = y;
+        this.positionsList = positionsList;
+        this.listView = listView;
+        this.listAdapter = listAdapter;
+        this.posIndex = posIndex;
     }
 
     @Override
@@ -71,14 +87,45 @@ public class DialogRenameFragment extends DialogFragment
                 else
                 {
                     dialog.dismiss();
+
                     Positions positions = new Positions();
                     positions.removePosition(position, x, y, getContext());
                     positions.addPosition(posName, x, y, getContext());
+
+                    updateList(posName);
+
                     Toast.makeText(getContext(), getResources().getString(R.string.toast_item_renamed), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         return dialog;
+    }
+
+    private String toJSON(String position, int x, int y)
+    {
+        final JSONObject object = new JSONObject();
+
+        try
+        {
+            //Erstelle die JSON-Datei
+            object.put("position", position);
+            object.put("x", x);
+            object.put("y", y);
+        }
+        catch(JSONException e)
+        {
+            Log.e(LOG_TAG, "Failed to create JSONObject", e);
+        }
+        return object.toString();
+    }
+
+    private void updateList(String posName)
+    {
+        positionsList.remove(positionsList.get(posIndex));
+        positionsList.add(toJSON(posName, x, y));
+        Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
+        listView.setAdapter(listAdapter);
+        listView.setSelection(posIndex-1);
     }
 }
 

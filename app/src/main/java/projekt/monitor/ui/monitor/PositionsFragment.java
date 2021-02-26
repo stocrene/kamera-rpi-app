@@ -62,6 +62,7 @@ public class PositionsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        Log.d(LOG_TAG, "onCreateView()");
         rootView = inflater.inflate(R.layout.fragment_positions, container, false);
         parentView = getParentFragment().getView();
 
@@ -178,20 +179,14 @@ public class PositionsFragment extends Fragment
                             case 0:
                                 //rename
                                 Log.d(LOG_TAG, "rename");
-                                DialogRenameFragment dialogRenameFragment = new DialogRenameFragment(pos, x, y);
+                                DialogRenameFragment dialogRenameFragment = new DialogRenameFragment(pos, x, y, positionsList, listView, listAdapter, position);
                                 dialogRenameFragment.show(getActivity().getSupportFragmentManager(), "renamePosition");
-                                updateList(position);
                                 break;
                             case 1:
                                 //delete
                                 Log.d(LOG_TAG, "delete");
-                                DialogFragment dialogDeleteFragment = new DialogDeleteFragment(pos, x, y);
+                                DialogFragment dialogDeleteFragment = new DialogDeleteFragment(pos, x, y, positionsList, listView, listAdapter, position);
                                 dialogDeleteFragment.show(getActivity().getSupportFragmentManager(), "deletePosition");
-                                positionsList.clear();
-                                positionsList = positions.getPositions(getContext());
-                                //positionsList.remove(position);
-                                //listView.setAdapter(listAdapter);
-//                            listAdapter.notifyDataSetChanged();
 //                            listView.setAdapter(listAdapter);
 //                            AlertDialog dialog = dialogDeleteFragment.getDialog();
 //                            dialog.show();
@@ -246,32 +241,27 @@ public class PositionsFragment extends Fragment
         return rootView;
     }
 
-    public void updateList(int position)
-    {
-        positionsList = positions.getPositions(getContext());
-        if(positionsList != null)
-        {
-            //sort list alphabetically
-            Collections.sort(positionsList, String.CASE_INSENSITIVE_ORDER);
-            listAdapter.notifyDataSetChanged();
-            listView.invalidateViews();
-            listView.setAdapter(listAdapter);
-        }
-        else
-        {
-            rootView.findViewById(R.id.textView_no_positions).setVisibility(View.VISIBLE);
-        }
-    }
 
     private int dp2px(int dp)
     {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
+
+
+    @Override
+    public void onResume()
+    {
+        Log.d(LOG_TAG, "onResume()");
+        super.onResume();
+        button_add_position.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     public void onDestroy()
     {
         super.onDestroy();
+        Log.d(LOG_TAG, "onDestroy()");
         if(button_add_position_visible)
         {
             button_add_position.setVisibility(View.VISIBLE);

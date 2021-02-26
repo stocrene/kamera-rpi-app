@@ -29,7 +29,14 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -114,8 +121,6 @@ public class MonitorFragment extends Fragment
             R.drawable.ic_tab_4_active
     };
 
-    private Thread thread;
-
     private final String LOG_TAG = MonitorFragment.class.getSimpleName();
     private final int TEXT_SIZE = 17;
     private final int MOTION_PORT = 8081;
@@ -128,12 +133,13 @@ public class MonitorFragment extends Fragment
         super.onCreate(savedInstanceState);
         TransitionInflater inflater = TransitionInflater.from(requireContext());
         setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
-        //new SocketThread().start();
+        Log.d(LOG_TAG, "onCreate()");
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        Log.d(LOG_TAG, "onCreateView()");
         rootView = inflater.inflate(R.layout.fragment_monitor, container, false);
 
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
@@ -150,7 +156,7 @@ public class MonitorFragment extends Fragment
 
         camera = new Camera(ip);
         camera.addPositionObserver(this);
-        camera.requestPosition();
+        camera.requestPosition(1);
 
         if(savedInstanceState == null)
         {
@@ -238,7 +244,6 @@ public class MonitorFragment extends Fragment
         textView_pan_value = (TextView) rootView.findViewById(R.id.textView_pan_value);
         textView_camera_not_connected = (TextView) rootView.findViewById(R.id.textView_camera_not_connected);
         divider = (View) rootView.findViewById(R.id.divider);
-
 
         DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), Color.WHITE);
         DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowL.getDrawable()).mutate(), Color.WHITE);
@@ -487,6 +492,7 @@ public class MonitorFragment extends Fragment
     @Override
     public void onStart()
     {
+        Log.d(LOG_TAG, "onStart()");
         super.onStart();
         Mjpeg.newInstance()
                 .open("http://" + ip + ":" + MOTION_PORT + "/", TIMEOUT)
@@ -501,8 +507,11 @@ public class MonitorFragment extends Fragment
                             textView_pan.setVisibility(View.VISIBLE);
                             textView_tild_value.setVisibility(View.VISIBLE);
                             textView_pan_value.setVisibility(View.VISIBLE);
-                            imageButtonAddLocation.setVisibility(View.VISIBLE);
                             divider.setVisibility(View.VISIBLE);
+                            if(mainViewModel.tab_active != 3)
+                            {
+                                imageButtonAddLocation.setVisibility(View.VISIBLE);
+                            }
                         },
                         throwable -> {
                             Log.e(LOG_TAG, "mjpeg error", throwable);
@@ -518,6 +527,7 @@ public class MonitorFragment extends Fragment
                         });
     }
 
+
     @Override
     public void onStop()
     {
@@ -525,6 +535,10 @@ public class MonitorFragment extends Fragment
         mjpegView.stopPlayback();
     }
 }
+
+
+
+
 
 
 

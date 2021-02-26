@@ -26,7 +26,7 @@
     <!-- fragment_monitor - TabLayout -->
     <string name="nav_buttons">Tasten</string>
     <string name="nav_joystick">Joystick</string>
-    <string name="nav_input">Eingabe</string>
+    <string name="nav_input">Slider</string>
     <string name="nav_positions">Positionen</string>
 
     <!-- fragment_settings -->

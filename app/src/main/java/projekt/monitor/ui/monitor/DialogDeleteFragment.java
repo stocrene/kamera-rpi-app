@@ -5,11 +5,19 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 import androidx.fragment.app.DialogFragment;
 import projekt.monitor.Positions;
@@ -17,15 +25,23 @@ import projekt.monitor.R;
 
 public class DialogDeleteFragment extends DialogFragment
 {
+    List positionsList;
+    ListView listView;
+    ArrayAdapter listAdapter;
+    private int posIndex;
     private String position;
     private int x, y;
     private final String LOG_TAG = DialogDeleteFragment.class.getSimpleName();
 
-    public DialogDeleteFragment(String position, int x, int y)
+    public DialogDeleteFragment(String position, int x, int y, List positionsList, ListView listView, ArrayAdapter listAdapter, int posIndex)
     {
         this.position = position;
         this.x = x;
         this.y = y;
+        this.positionsList = positionsList;
+        this.listView = listView;
+        this.listAdapter = listAdapter;
+        this.posIndex = posIndex;
     }
 
     @Override
@@ -43,6 +59,9 @@ public class DialogDeleteFragment extends DialogFragment
                     {
                         Positions positions = new Positions();
                         positions.removePosition(position, x, y, getContext());
+
+                        updateList();
+
                         Toast.makeText(getContext(), getResources().getString(R.string.toast_item_deleted), Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -58,5 +77,12 @@ public class DialogDeleteFragment extends DialogFragment
             }
         });
         return dialog;
+    }
+
+    private void updateList()
+    {
+        positionsList.remove(positionsList.get(posIndex));
+        listView.setAdapter(listAdapter);
+        listView.setSelection(posIndex-1);
     }
 }

@@ -11,7 +11,7 @@
     <color name="ic_raspi">#6BFFFFFF</color>
 
     <!-- fragment_monitor -->
-    <color name="grey">#AB000000</color>
+    <color name="grey">#5A5A5A</color>
     <color name="divider">#DADADA</color>
     <color name="icon_no_connection">#2A000000</color>
     <!-- TabLayout -->
@@ -23,5 +23,4 @@
 
     <color name="ic_left_list">#CFCFCF</color>
 
-    <color name="joystick">#676767</color>
 </resources>

@@ -55,7 +55,7 @@ public class Camera
             {
                 byte[] data = object.toString().getBytes("utf-8");
                 new Send(data, ip).start();
-                requestPosition();
+                requestPosition(40);
             }
             catch (UnsupportedEncodingException e)
             {
@@ -86,7 +86,7 @@ public class Camera
                 byte[] data = object.toString().getBytes("utf-8");
                 //Log.d(LOG_TAG, object.toString());
                 new Send(data, ip).start();
-                requestPosition();
+                requestPosition(1);
             }
             catch (UnsupportedEncodingException e)
             {
@@ -100,10 +100,10 @@ public class Camera
     }
 
     //Fragt beim Raspberry aktuelle Position an
-    public void requestPosition()
+    public void requestPosition(int num)
     {
         Log.d(LOG_TAG, "requestPosition()");
-        new Request(ip, this).start();
+        new Request(ip, this, num).start();
     }
 
 
@@ -130,6 +130,8 @@ public class Camera
 class Request extends Thread
 {
     private String ip;
+    private final int interval = 100;
+    private int num;
     private final String LOG_TAG = Request.class.getSimpleName();
     private Socket socket;
     private final int TCP_PORT_REQUEST = 10001;
@@ -139,76 +141,80 @@ class Request extends Thread
     private int y = 0;
     private final int delay = 200;
 
-    public Request(String ip, Camera camera)
+    public Request(String ip, Camera camera, int num)
     {
         this.ip = ip;
         this.camera = camera;
+        this.num = num;
     }
 
     public void run()
     {
         final JSONObject object = new JSONObject();
 
-        try
+        for(int i = 0; i < num; i++)
         {
-            Thread.sleep(delay);
-        }
-        catch (Exception e)
-        {
-            Log.e(LOG_TAG, "Thread delay error");
-        }
-
-        try
-        {
-            //Verbindungsaufbau
-            //Log.d(LOG_TAG, "Verbindungsaufbau");
-            socket = new Socket(ip, TCP_PORT_REQUEST);
-            socketRunning = true;
-            //Log.d(LOG_TAG, "Verbindung aufgebaut");
+            try
+            {
+                Thread.sleep(delay);
+            }
+            catch (Exception e)
+            {
+                Log.e(LOG_TAG, "Thread delay error");
+            }
 
             try
             {
-                object.put("REQUEST", "position");
+                //Verbindungsaufbau
+                //Log.d(LOG_TAG, "Verbindungsaufbau");
+                socket = new Socket(ip, TCP_PORT_REQUEST);
+                socketRunning = true;
+                //Log.d(LOG_TAG, "Verbindung aufgebaut");
+
                 try
                 {
-                    byte[] data = object.toString().getBytes("utf-8");
-                    Log.d(LOG_TAG, object.toString());
-                    OutputStream output = socket.getOutputStream();
-                    output.write(data);
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    String strInput = null;
-                    while ((strInput = in.readLine()) != null)
+                    object.put("REQUEST", "position");
+                    try
                     {
-                        Log.d(LOG_TAG, strInput);
-                        JSONObject object1 = new JSONObject(strInput);
+                        byte[] data = object.toString().getBytes("utf-8");
+                        Log.d(LOG_TAG, object.toString());
+                        OutputStream output = socket.getOutputStream();
+                        output.write(data);
 
-                        if ((object1.get("ANSWER").toString()).equals("position"))
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        String strInput = null;
+                        while ((strInput = in.readLine()) != null)
                         {
-                            x = Integer.valueOf(object1.get("X").toString());
-                            y = Integer.valueOf(object1.get("Y").toString());
-                            camera.updatePosition(x,y);
-                        }
-                        else
-                        {
-                            Log.d(LOG_TAG, "Objekt passt nicht mit Erwartetem Wert überein");
+                            Log.d(LOG_TAG, strInput);
+                            JSONObject object1 = new JSONObject(strInput);
+
+                            if ((object1.get("ANSWER").toString()).equals("position"))
+                            {
+                                x = Integer.valueOf(object1.get("X").toString());
+                                y = Integer.valueOf(object1.get("Y").toString());
+                                camera.updatePosition(x,y);
+                            }
+                            else
+                            {
+                                Log.d(LOG_TAG, "Objekt passt nicht mit Erwartetem Wert überein");
+                            }
                         }
                     }
+                    catch (UnsupportedEncodingException e)
+                    {
+                        Log.e(LOG_TAG, "Failed to create request", e);
+                    }
                 }
-                catch (UnsupportedEncodingException e)
+                catch (JSONException e)
                 {
-                    Log.e(LOG_TAG, "Failed to create request", e);
+                    Log.e(LOG_TAG, "Failed to create JSONObject", e);
                 }
+                socket.close();
             }
-            catch (JSONException e)
+            catch (Exception e)
             {
-                Log.e(LOG_TAG, "Failed to create JSONObject", e);
+                Log.e(LOG_TAG, "Socket error", e);
             }
-            socket.close();
-        }
-        catch (Exception e)
-        {
-            Log.e(LOG_TAG, "Socket error", e);
         }
     }
 }
