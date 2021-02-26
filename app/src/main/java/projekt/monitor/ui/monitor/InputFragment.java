@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.niqdev.mjpeg.MjpegView;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -20,6 +21,9 @@ import projekt.monitor.R;
 public class InputFragment extends Fragment
 {
     private View rootView;
+    private View parentView;
+
+    private MjpegView mjpegView;
 
     private Camera camera;
     private MonitorViewModel monitorViewModel;
@@ -41,11 +45,14 @@ public class InputFragment extends Fragment
     {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_input, container, false);
+        parentView = getParentFragment().getView();
 
         monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
 
         camera = new Camera(monitorViewModel.ip);
         camera.addPositionObserver((MonitorFragment)getParentFragment());
+
+        mjpegView = (MjpegView)parentView.findViewById(R.id.mjpegView);
 
         slider_pan = (Slider)rootView.findViewById(R.id.slider_pan);
         slider_tild = (Slider)rootView.findViewById(R.id.slider_tild);
@@ -74,8 +81,10 @@ public class InputFragment extends Fragment
             public void onStopTrackingTouch(Slider slider)
             {
                 // Send message
-                camera.setTargetPosition((int)slider.getValue(), (int)slider_tild.getValue());
-
+                if(mjpegView.isStreaming())
+                {
+                    camera.setTargetPosition((int)slider.getValue(), (int)slider_tild.getValue());
+                }
             }
         });
         slider_pan.addOnChangeListener(new Slider.OnChangeListener()
@@ -97,8 +106,10 @@ public class InputFragment extends Fragment
             public void onStopTrackingTouch(Slider slider)
             {
                 // Send message
-                camera.setTargetPosition((int)slider_pan.getValue(), (int)slider.getValue());
-
+                if(mjpegView.isStreaming())
+                {
+                    camera.setTargetPosition((int)slider_pan.getValue(), (int)slider.getValue());
+                }
             }
         });
         slider_tild.addOnChangeListener(new Slider.OnChangeListener()

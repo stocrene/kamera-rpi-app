@@ -28,12 +28,10 @@ import projekt.monitor.R;
 public class SettingsFragment extends Fragment
 {
     private static String ip = "";
-    private static String port = "";
     private static String username = "";
     private static String passwort = "";
 
     private EditText editText_ip;
-    private EditText editText_port;
     private EditText editText_username;
     private EditText editText_passwort;
     private Button button;
@@ -64,7 +62,6 @@ public class SettingsFragment extends Fragment
         editor = pref.edit();
 
         editText_ip       = (EditText)root.findViewById(R.id.editText_ip);
-        editText_port     = (EditText)root.findViewById(R.id.editText_port);
         editText_username = (EditText)root.findViewById(R.id.editText_username);
         editText_passwort = (EditText)root.findViewById(R.id.editText_password);
         button = (Button)root.findViewById(R.id.button);
@@ -130,12 +127,10 @@ public class SettingsFragment extends Fragment
         });*/
 
         ip       = pref.getString("ip", "");
-        port     = pref.getString("port", "");
         username = pref.getString("username", "");
         passwort = pref.getString("passwort", "");
 
         editText_ip.setText(ip);
-        editText_port.setText(port);
         editText_username.setText(username);
         editText_passwort.setText(passwort);
 
@@ -145,16 +140,14 @@ public class SettingsFragment extends Fragment
             public void onClick(View v)
             {
                 ip       = editText_ip.getText().toString();
-                port     = editText_port.getText().toString();
                 username = editText_username.getText().toString();
                 passwort = editText_passwort.getText().toString();
 
                 Log.d(LOG_TAG, ip);
 
-                if(!port.equals("") && !ip.equals("") && !username.equals("") && !passwort.equals(""))
+                if(!ip.equals("") && !username.equals("") && !passwort.equals(""))
                 {
                     editor.putString("ip", ip);
-                    editor.putString("port", port);
                     editor.putString("username", username);
                     editor.putString("passwort", passwort);
 
@@ -164,7 +157,7 @@ public class SettingsFragment extends Fragment
                 }
                 else
                 {
-                    Toast.makeText(root.getContext(), "Nicht alle Felder ausgefüllt!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(root.getContext(), getResources().getString(R.string.fields_error), Toast.LENGTH_SHORT).show();
                 }
             }
         });

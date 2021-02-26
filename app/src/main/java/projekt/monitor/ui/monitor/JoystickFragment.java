@@ -70,7 +70,7 @@ public class JoystickFragment extends Fragment
                     x = (float)Math.cos(Math.toRadians(angle))*strength;
                     y = (float) Math.sin(Math.toRadians(angle))*strength;
 
-                    if (mjpegView.getSurfaceView().isShown())
+                    if (mjpegView.isStreaming())
                     {
                         if(x > 0)
                         {
@@ -107,8 +107,8 @@ public class JoystickFragment extends Fragment
                         {
                             imageViewArrowD.setVisibility(View.INVISIBLE);
                         }
+                        camera.sendDirection((int)x, (int)y);
                     }
-                    camera.sendDirection((int)x, (int)y);
                 }
                 else
                 {

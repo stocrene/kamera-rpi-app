@@ -83,18 +83,10 @@ public class ButtonsFragment extends Fragment
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                if (mjpegView.getSurfaceView().isShown())
+                if (mjpegView.isStreaming())
                 {
                     if(event.getAction() == MotionEvent.ACTION_DOWN)
                     {
-//                        if(monitorViewModel.posX > xMax -2)
-//                        {
-//                            DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.red));
-//                        }
-//                        else
-//                        {
-//                            DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), Color.WHITE);
-//                        }
                         imageViewArrowR.setVisibility(View.VISIBLE);
                         Log.d(LOG_TAG, "Button Right Touch");
                         button_is_press = true;
@@ -118,7 +110,7 @@ public class ButtonsFragment extends Fragment
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                if (mjpegView.getSurfaceView().isShown())
+                if (mjpegView.isStreaming())
                 {
                     if(event.getAction() == MotionEvent.ACTION_DOWN)
                     {
@@ -144,7 +136,7 @@ public class ButtonsFragment extends Fragment
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                if (mjpegView.getSurfaceView().isShown())
+                if (mjpegView.isStreaming())
                 {
                     if(event.getAction() == MotionEvent.ACTION_DOWN)
                     {
@@ -170,7 +162,7 @@ public class ButtonsFragment extends Fragment
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                if (mjpegView.getSurfaceView().isShown())
+                if (mjpegView.isStreaming())
                 {
                     if(event.getAction() == MotionEvent.ACTION_DOWN)
                     {

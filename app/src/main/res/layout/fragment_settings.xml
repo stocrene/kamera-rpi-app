@@ -32,25 +32,6 @@
             android:inputType="text" />
 
         <TextView
-            android:id="@+id/textView_port"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_textview_margin_top"
-            android:layout_marginLeft="@dimen/settings_textview_margin_left"
-            android:text="@string/port"
-            android:textSize="@dimen/settings_textview_textSize" />
-
-        <EditText
-            android:id="@+id/editText_port"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/settings_edittext_margin_left"
-            android:layout_marginRight="@dimen/settings_edittext_margin_right"
-            android:backgroundTint="@color/colorPrimary"
-            android:ems="10"
-            android:inputType="number" />
-
-        <TextView
             android:id="@+id/textView_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

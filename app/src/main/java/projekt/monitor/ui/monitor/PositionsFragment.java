@@ -23,6 +23,7 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.github.niqdev.mjpeg.MjpegView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +41,9 @@ public class PositionsFragment extends Fragment
 {
     private View rootView;
     private View parentView;
+
+    private MjpegView mjpegView;
+
     private Camera camera;
     private ImageButton button_add_position;
     private boolean button_add_position_visible = false;
@@ -48,7 +52,7 @@ public class PositionsFragment extends Fragment
     private List<String> positionsList;
     private ArrayAdapter<String> listAdapter;
     private SwipeMenuListView listView;
-    //private String[] listPositions = {"Position 1", "Position 2", "Position 3", "Position 4", "Position 5", "Position 6", "Position 7", "Position 8", "Position 9"};
+
     private final String LOG_TAG = PositionsFragment.class.getSimpleName();
 
 
@@ -65,6 +69,8 @@ public class PositionsFragment extends Fragment
         Log.d(LOG_TAG, "onCreateView()");
         rootView = inflater.inflate(R.layout.fragment_positions, container, false);
         parentView = getParentFragment().getView();
+
+        mjpegView = (MjpegView)parentView.findViewById(R.id.mjpegView);
 
         MonitorViewModel monitorViewModel = new ViewModelProvider(getParentFragment()).get(MonitorViewModel.class);
         camera = new Camera(monitorViewModel.ip);
@@ -100,22 +106,25 @@ public class PositionsFragment extends Fragment
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id)
                 {
-                    String posJSON = (String)adapterView.getItemAtPosition(pos);
-
-                    try
+                    if(mjpegView.isStreaming())
                     {
-                        JSONObject object = new JSONObject(posJSON);
-                        int x;
-                        int y;
+                        String posJSON = (String)adapterView.getItemAtPosition(pos);
 
-                        x = Integer.parseInt(object.get("x").toString());
-                        y = Integer.parseInt(object.get("y").toString());
+                        try
+                        {
+                            JSONObject object = new JSONObject(posJSON);
+                            int x;
+                            int y;
 
-                        camera.setTargetPosition(x, y);
-                    }
-                    catch(JSONException e)
-                    {
-                        Log.e(LOG_TAG, "JSONObject error", e);
+                            x = Integer.parseInt(object.get("x").toString());
+                            y = Integer.parseInt(object.get("y").toString());
+
+                            camera.setTargetPosition(x, y);
+                        }
+                        catch(JSONException e)
+                        {
+                            Log.e(LOG_TAG, "JSONObject error", e);
+                        }
                     }
                 }
             });

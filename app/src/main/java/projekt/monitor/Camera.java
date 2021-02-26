@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Camera
 {
-    private String ip;
+    private String ip = "";
     private final String LOG_TAG = Camera.class.getSimpleName();
     public int x_pos;
     public int y_pos;
@@ -34,10 +34,7 @@ public class Camera
         y_pos = 0;
     }
 
-    public Camera()
-    {
-        ip = "";
-    }
+    public Camera() {}
 
     //Überträgt die gewünschte Soll-Position
     public void setTargetPosition(int x, int y)
@@ -55,7 +52,7 @@ public class Camera
             {
                 byte[] data = object.toString().getBytes("utf-8");
                 new Send(data, ip).start();
-                requestPosition(40);
+                requestPosition(25);
             }
             catch (UnsupportedEncodingException e)
             {
@@ -70,9 +67,9 @@ public class Camera
     }
 
     //Überträgt die Richtung (z.B. Pfeiltasten & Joystick)
-    public void sendDirection(int x,int y)
+    public void sendDirection(int x, int y)
     {
-        Log.d(LOG_TAG, "sendDirection(x,y)");
+        Log.d(LOG_TAG, "sendDirection(x, y)");
         final JSONObject object = new JSONObject();
 
         try
@@ -136,7 +133,6 @@ class Request extends Thread
     private Socket socket;
     private final int TCP_PORT_REQUEST = 10001;
     private Camera camera;
-    private boolean socketRunning = false;
     private int x = 0;
     private int y = 0;
     private final int delay = 200;
@@ -168,7 +164,6 @@ class Request extends Thread
                 //Verbindungsaufbau
                 //Log.d(LOG_TAG, "Verbindungsaufbau");
                 socket = new Socket(ip, TCP_PORT_REQUEST);
-                socketRunning = true;
                 //Log.d(LOG_TAG, "Verbindung aufgebaut");
 
                 try
@@ -226,14 +221,12 @@ class Send extends Thread
     private final String LOG_TAG = Send.class.getSimpleName();
     private final int TCP_PORT = 10000;
     private Socket socket;
-    private boolean socketRunning = false;
 
     public Send(byte[] data, String ip)
     {
         this.ip = ip;
         this.data = data;
     }
-
 
     public void run()
     {
@@ -242,7 +235,6 @@ class Send extends Thread
         try
         {
             socket = new Socket(ip, TCP_PORT);
-            socketRunning = true;
 
             try
             {

@@ -278,7 +278,7 @@
         android:id="@+id/textView_camera_not_connected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:text="@string/camera_not_connected"
         android:textSize="16sp"
         android:visibility="invisible"
@@ -293,8 +293,8 @@
         android:layout_marginStart="8dp"
         android:src="@drawable/ic_info"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_container_view"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_camera_not_connected"
         app:layout_constraintStart_toEndOf="@+id/textView_camera_not_connected"
-        app:layout_constraintTop_toBottomOf="@+id/mjpegView" />
+        app:layout_constraintTop_toTopOf="@+id/textView_camera_not_connected" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

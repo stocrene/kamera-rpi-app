@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,21 +23,6 @@ import com.github.niqdev.mjpeg.DisplayMode;
 import com.github.niqdev.mjpeg.Mjpeg;
 import com.github.niqdev.mjpeg.MjpegView;
 import com.google.android.material.tabs.TabLayout;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Properties;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -54,9 +37,8 @@ import projekt.monitor.R;
 public class MonitorFragment extends Fragment
 {
     private static String ip = "";
-    private static String port = "";
     private static String username = "";
-    private static String passwort = "";
+    private static String password = "";
 
     private Camera camera;
 
@@ -148,9 +130,8 @@ public class MonitorFragment extends Fragment
         pref = PreferenceManager.getDefaultSharedPreferences(rootView.getContext());
         editor = pref.edit();
         ip       = pref.getString("ip", "");
-        port     = pref.getString("port", "");
         username = pref.getString("username", "");
-        passwort = pref.getString("passwort", "");
+        password = pref.getString("passwort", "");
 
         monitorViewModel.ip = ip;
 
@@ -495,8 +476,10 @@ public class MonitorFragment extends Fragment
         Log.d(LOG_TAG, "onStart()");
         super.onStart();
         Mjpeg.newInstance()
+                .credential(username, password)
                 .open("http://" + ip + ":" + MOTION_PORT + "/", TIMEOUT)
                 .subscribe(inputStream -> {
+                            monitorViewModel.stream_conntected = true;
                             mjpegView.setSource(inputStream);
                             mjpegView.setDisplayMode(DisplayMode.BEST_FIT);
                             mjpegView.showFps(false);

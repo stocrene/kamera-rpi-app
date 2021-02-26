@@ -31,10 +31,10 @@
 
     <!-- fragment_settings -->
     <string name="ip_adress">IP-Adresse</string>
-    <string name="port">Port</string>
     <string name="username">Benutzername</string>
     <string name="passwort">Passwort</string>
     <string name="button_save">Speichern</string>
+    <string name="fields_error">Nicht alle Felder ausgefüllt</string>
 
     <!-- fragment_positions -->
     <string name="no_positions">Keine Positionen gespeichert</string>
