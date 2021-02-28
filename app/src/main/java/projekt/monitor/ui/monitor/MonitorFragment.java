@@ -42,10 +42,11 @@ public class MonitorFragment extends Fragment
 
     private Camera camera;
 
-    private final int xMin = 1;
-    private final int xMax = 168;
-    private final int yMin = 12;
-    private final int yMax = 88;
+    private final int delta = 2;
+    private final int xMin = 0+delta;
+    private final int xMax = 180-delta;
+    private final int yMin = 0+delta;
+    private final int yMax = 90-delta;
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;

@@ -145,7 +145,7 @@ public class SettingsFragment extends Fragment
 
                 Log.d(LOG_TAG, ip);
 
-                if(!ip.equals("") && !username.equals("") && !passwort.equals(""))
+                if(!ip.equals(""))
                 {
                     editor.putString("ip", ip);
                     editor.putString("username", username);
@@ -157,7 +157,7 @@ public class SettingsFragment extends Fragment
                 }
                 else
                 {
-                    Toast.makeText(root.getContext(), getResources().getString(R.string.fields_error), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(root.getContext(), getResources().getString(R.string.ip_error), Toast.LENGTH_SHORT).show();
                 }
             }
         });
