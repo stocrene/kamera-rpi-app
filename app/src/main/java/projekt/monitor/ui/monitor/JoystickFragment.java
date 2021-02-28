@@ -29,8 +29,11 @@ public class JoystickFragment extends Fragment
 
     private float x;
     private float y;
+
     private Camera camera;
-    private int interval = 100;
+
+    private final int threshold = 10;
+    private final int interval = 100;
 
     private View rootView;
     private View parentView;
@@ -72,7 +75,7 @@ public class JoystickFragment extends Fragment
 
                     if (mjpegView.isStreaming())
                     {
-                        if(x > 0)
+                        if(x > threshold)
                         {
                             imageViewArrowR.setVisibility(View.VISIBLE);
                         }
@@ -81,7 +84,7 @@ public class JoystickFragment extends Fragment
                             imageViewArrowR.setVisibility(View.INVISIBLE);
                         }
 
-                        if (x < 0)
+                        if (x < -threshold)
                         {
                             imageViewArrowL.setVisibility(View.VISIBLE);
                         }
@@ -90,7 +93,7 @@ public class JoystickFragment extends Fragment
                             imageViewArrowL.setVisibility(View.INVISIBLE);
                         }
 
-                        if(y > 0)
+                        if(y > threshold)
                         {
                             imageViewArrowU.setVisibility(View.VISIBLE);
                         }
@@ -99,7 +102,7 @@ public class JoystickFragment extends Fragment
                             imageViewArrowU.setVisibility(View.INVISIBLE);
                         }
 
-                        if (y < 0)
+                        if (y < -threshold)
                         {
                             imageViewArrowD.setVisibility(View.VISIBLE);
                         }
