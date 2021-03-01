@@ -290,7 +290,7 @@ public class MonitorFragment extends Fragment
                 textView_tild_value.setText(tildVal);
                 if(x >= xMax)
                 {
-                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.red));
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowR.getDrawable()).mutate(), getResources().getColor(R.color.arrow_red));
                 }
                 else
                 {
@@ -299,7 +299,7 @@ public class MonitorFragment extends Fragment
 
                 if(x <= xMin)
                 {
-                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowL.getDrawable()).mutate(), getResources().getColor(R.color.red));
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowL.getDrawable()).mutate(), getResources().getColor(R.color.arrow_red));
                 }
                 else
                 {
@@ -308,7 +308,7 @@ public class MonitorFragment extends Fragment
 
                 if(y >= yMax)
                 {
-                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowU.getDrawable()).mutate(), getResources().getColor(R.color.red));
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowU.getDrawable()).mutate(), getResources().getColor(R.color.arrow_red));
                 }
                 else
                 {
@@ -317,7 +317,7 @@ public class MonitorFragment extends Fragment
 
                 if(y <= yMin)
                 {
-                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowD.getDrawable()).mutate(), getResources().getColor(R.color.red));
+                    DrawableCompat.setTint(DrawableCompat.wrap(imageViewArrowD.getDrawable()).mutate(), getResources().getColor(R.color.arrow_red));
                 }
                 else
                 {

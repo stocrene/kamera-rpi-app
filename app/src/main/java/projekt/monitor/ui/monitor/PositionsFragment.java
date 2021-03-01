@@ -28,7 +28,6 @@ import com.github.niqdev.mjpeg.MjpegView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Collections;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -139,9 +138,7 @@ public class PositionsFragment extends Fragment
                     // create "edit" item
                     SwipeMenuItem editItem = new SwipeMenuItem(getContext());
                     // set item background
-                    //editItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
-                    //editItem.setBackground(new ColorDrawable(Color.rgb(0x3c, 0x3c, 0x3c)));
-                    editItem.setBackground(new ColorDrawable(Color.rgb(0xa4, 0xa9, 0xad)));
+                    editItem.setBackground(new ColorDrawable(getResources().getColor(R.color.item_rename)));
                     // set item width
                     editItem.setWidth(dp2px(90));
                     // set item title
@@ -152,9 +149,7 @@ public class PositionsFragment extends Fragment
                     // create "delete" item
                     SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
                     // set item background
-                    //deleteItem.setBackground(new ColorDrawable(Color.rgb(0xff, 0x33, 0x33)));
-                    //deleteItem.setBackground(new ColorDrawable(Color.rgb(0xff, 0x5a, 0x5f)));
-                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xef, 0x5b, 0x5b)));
+                    deleteItem.setBackground(new ColorDrawable(getResources().getColor(R.color.item_delete)));
                     // set item width
                     deleteItem.setWidth(dp2px(90));
                     // set a icon

@@ -19,8 +19,10 @@
     <color name="tablayout_color_active">@color/colorPrimary</color>
     <color name="tablayout_color_inactive">#74000000</color>
     <!-- arrows -->
-    <color name="red">#CD382D</color>
-
-    <color name="ic_left_list">#CFCFCF</color>
+    <color name="arrow_red">#EF5B5B</color>
+    <!-- listView -->
+    <color name="item_rename">#A4A9AD</color>
+    <color name="item_delete">@color/arrow_red</color>
+    <color name="ic_left_list">#DADADA</color>
 
 </resources>

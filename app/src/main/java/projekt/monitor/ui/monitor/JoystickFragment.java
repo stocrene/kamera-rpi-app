@@ -32,7 +32,7 @@ public class JoystickFragment extends Fragment
 
     private Camera camera;
 
-    private final int threshold = 10;
+    private final int threshold = 15;
     private final int interval = 100;
 
     private View rootView;
